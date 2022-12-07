@@ -1,0 +1,153 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/IntegrationTestingProject/IntegrationTestingProject.csproj": {}
+  },
+  "projects": {
+    "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/IntegrationTestingProject/IntegrationTestingProject.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/IntegrationTestingProject/IntegrationTestingProject.csproj",
+        "projectName": "IntegrationTestingProject",
+        "projectPath": "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/IntegrationTestingProject/IntegrationTestingProject.csproj",
+        "packagesPath": "/home/paviter/.nuget/packages/",
+        "outputPath": "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/IntegrationTestingProject/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/paviter/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/MyAppT/MyAppT.csproj": {
+                "projectPath": "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/MyAppT/MyAppT.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Mvc.Testing": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.8.3, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
+            "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.4.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.408/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/MyAppT/MyAppT.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/MyAppT/MyAppT.csproj",
+        "projectName": "MyAppT",
+        "projectPath": "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/MyAppT/MyAppT.csproj",
+        "packagesPath": "/home/paviter/.nuget/packages/",
+        "outputPath": "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/MyAppT/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/paviter/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Selenium.WebDriver.ChromeDriver": {
+              "target": "Package",
+              "version": "[87.0.4280.8800, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.408/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
