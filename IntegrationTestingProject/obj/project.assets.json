@@ -7254,32 +7254,34 @@
     ]
   },
   "packageFolders": {
-    "/home/paviter/.nuget/packages/": {}
+    "C:\\Users\\tanya.sharma\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/IntegrationTestingProject/IntegrationTestingProject.csproj",
+      "projectUniqueName": "C:\\Users\\tanya.sharma\\Source\\Repos\\test-dotnet2\\IntegrationTestingProject\\IntegrationTestingProject.csproj",
       "projectName": "IntegrationTestingProject",
-      "projectPath": "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/IntegrationTestingProject/IntegrationTestingProject.csproj",
-      "packagesPath": "/home/paviter/.nuget/packages/",
-      "outputPath": "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/IntegrationTestingProject/obj/",
+      "projectPath": "C:\\Users\\tanya.sharma\\Source\\Repos\\test-dotnet2\\IntegrationTestingProject\\IntegrationTestingProject.csproj",
+      "packagesPath": "C:\\Users\\tanya.sharma\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\tanya.sharma\\Source\\Repos\\test-dotnet2\\IntegrationTestingProject\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/paviter/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\tanya.sharma\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/MyAppT/MyAppT.csproj": {
-              "projectPath": "/home/paviter/Desktop/Project/clonedDotnetProject/Tutorial-3-6/MyAppT/MyAppT/MyAppT.csproj"
+            "C:\\Users\\tanya.sharma\\Source\\Repos\\test-dotnet2\\MyAppT\\MyAppT.csproj": {
+              "projectPath": "C:\\Users\\tanya.sharma\\Source\\Repos\\test-dotnet2\\MyAppT\\MyAppT.csproj"
             }
           }
         }
@@ -7328,7 +7330,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.408/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.307\\RuntimeIdentifierGraph.json"
       }
     }
   }
