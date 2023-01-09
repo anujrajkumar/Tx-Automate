@@ -33,7 +33,7 @@ steps:
         command: 'test'
         projects: 'TestingProject/TestingProject.csproj'
         publishTestResults: true
-        arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura --settings:coverage.runsettings'
+        arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
       continueOnError: true  
     - task: reportgenerator@5
       inputs:
