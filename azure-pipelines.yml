@@ -37,7 +37,7 @@ steps:
       continueOnError: true  
     - task: reportgenerator@5
       inputs:
-        reports: 'coverage.xml'
+        reports: 'TestResults\Coverage\coverage.cobertura.xml'
         targetdir: 'coveragereport'
     - task: PublishCodeCoverageResults@1
       inputs:
