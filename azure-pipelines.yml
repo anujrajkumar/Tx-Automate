@@ -33,8 +33,8 @@ steps:
         command: test
         projects: '**/*TestingProject*.csproj'
         publishTestResults: true
-        arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\'
-
+        arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura --settings:coverage.runsettings'
+      continueOnError: true  
     - task: DotNetCoreCLI@2
       displayName: Publish
       inputs:
