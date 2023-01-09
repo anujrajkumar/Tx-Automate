@@ -34,3 +34,16 @@ steps:
         projects: '**/*TestingProject*.csproj'
         publishTestResults: true
         arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\'
+
+    - task: DotNetCoreCLI@2
+      displayName: Publish
+      inputs:
+        command: publish
+        publishWebProjects: True
+        arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+        zipAfterPublish: True
+
+    - task: PublishBuildArtifacts@1
+      displayName: Publish Artifact (MyAppT.zip)
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'       
