@@ -31,7 +31,7 @@ steps:
       displayName: Test
       inputs:
         command: test
-        projects: '**/*TestingProject*.csproj'
+        projects: 'TestingProject/TestingProject.csproj'
         publishTestResults: true
         arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura --settings:coverage.runsettings'
       continueOnError: true  
