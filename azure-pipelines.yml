@@ -41,22 +41,18 @@ stages:
   jobs:
     - job: Build_Project
       steps:
-      # - task: SonarCloudPrepare@1
-      #   inputs:
-      #     SonarCloud: 'DotNetDemoPipeline'
-      #     organization: 'demo-pipeline'
-      #     scannerMode: 'MSBuild'
-      #     projectKey: 'DevOpsXperts-POC_DotNetDemoPipeline'
-      #     projectName: 'DotNetDemoPipeline'
-      
-      - task: DotNetCoreCLI@2
-        inputs:
-          command: 'build'
-      
-      # - task: SonarCloudAnalyze@1
-      # - task: SonarCloudPublish@1
-      #   inputs:
-      #     pollingTimeoutSec: '300'
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: 'restore'
+        projects: '**/MyAppT.csproj'
+
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        projects: '**/MyAppT.csproj'
+        arguments: '--configuration $(BuildConfiguration)' 
+
       - task: DotNetCoreCLI@2
         inputs:
           command: 'publish'
@@ -81,33 +77,18 @@ stages:
     - job: Unit_Test
       steps:
       - task: DotNetCoreCLI@2
+        displayName: Test
         inputs:
-          command: 'test'
-          projects: '**/*[Tt]est*/*.csproj'
+          command: test
+          projects: '**/*TestingProject*.csproj'
           publishTestResults: true
-          arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura --settings:coverage.runsettings'
+          arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
 
       - task: PublishCodeCoverageResults@1
         inputs:
           codeCoverageTool: 'Cobertura'
-          summaryFileLocation: '**/*cobertura.xml'
-steps:
-    - task: DotNetCoreCLI@2
-      displayName: Restore
-      inputs:
-        command: 'restore'
-        projects: '**/MyAppT.csproj'
+          summaryFileLocation: '$(Build.SourcesDirectory)\TestResults\Coverage\ '
+
       
-    - task: DotNetCoreCLI@2
-      displayName: Build
-      inputs:
-        projects: '**/MyAppT.csproj'
-        arguments: '--configuration $(BuildConfiguration)'
+
         
-    - task: DotNetCoreCLI@2
-      displayName: Test
-      inputs:
-        command: test
-        projects: '**/*TestingProject*.csproj'
-        publishTestResults: true
-        arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\'
