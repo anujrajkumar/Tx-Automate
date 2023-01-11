@@ -14,6 +14,83 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
+stages:
+- stage: Static_Code_Analysis
+  displayName: Static Code Analysis
+  jobs:
+    - job: SAST
+      steps:
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'DotNetDemoPipeline'
+          organization: 'demo-pipeline'
+          scannerMode: 'CLI'
+          configMode: 'manual'
+          cliProjectKey: 'DevOpsXperts-POC_DotNetDemoPipeline'
+          cliProjectName: 'DotNetDemoPipeline'
+          cliSources: '.'
+      - task: SonarCloudAnalyze@1
+      - task: SonarCloudPublish@1
+        inputs:
+          pollingTimeoutSec: '300'
+
+##################################################################################          
+
+- stage: Build
+  displayName: Project Build
+  jobs:
+    - job: Build_Project
+      steps:
+      # - task: SonarCloudPrepare@1
+      #   inputs:
+      #     SonarCloud: 'DotNetDemoPipeline'
+      #     organization: 'demo-pipeline'
+      #     scannerMode: 'MSBuild'
+      #     projectKey: 'DevOpsXperts-POC_DotNetDemoPipeline'
+      #     projectName: 'DotNetDemoPipeline'
+      
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'build'
+      
+      # - task: SonarCloudAnalyze@1
+      # - task: SonarCloudPublish@1
+      #   inputs:
+      #     pollingTimeoutSec: '300'
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'publish'
+          publishWebProjects: true
+          arguments: '-o $(build.artifactStagingDirectory)'
+          zipAfterPublish: false
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: $(build.artifactStagingDirectory)
+          artifact: 'drop'
+          publishLocation: 'pipeline'
+      # - task: NDependTask@1
+      #   inputs:
+      #     BinariesOutput: '$(build.artifactStagingDirectory)'
+      #   env:
+      #     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
+############################################################################################
+- stage: Unit_Test
+  displayName: Running Unit Test
+  jobs:
+    - job: Unit_Test
+      steps:
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'test'
+          projects: '**/*[Tt]est*/*.csproj'
+          publishTestResults: true
+          arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura --settings:coverage.runsettings'
+
+      - task: PublishCodeCoverageResults@1
+        inputs:
+          codeCoverageTool: 'Cobertura'
+          summaryFileLocation: '**/*cobertura.xml'
 steps:
     - task: DotNetCoreCLI@2
       displayName: Restore
