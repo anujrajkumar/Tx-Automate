@@ -1,3 +1,4 @@
+
 # .NET Desktop
 # Build and run tests for .NET Desktop or Windows classic desktop solutions.
 # Add steps that publish symbols, save build artifacts, and more:
@@ -14,44 +15,81 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-    - task: DotNetCoreCLI@2
-      displayName: Restore
-      inputs:
-        command: 'restore'
-        projects: '**/MyAppT.csproj'
-      
-    - task: DotNetCoreCLI@2
-      displayName: Build
-      inputs:
-        projects: '**/MyAppT.csproj'
-        arguments: '--configuration $(BuildConfiguration)'
-        
-    - task: DotNetCoreCLI@2
-      displayName: Test
-      inputs:
-        command: 'test'
-        projects: 'TestingProject/TestingProject.csproj'
-        publishTestResults: true
-        arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
-      continueOnError: true  
-    - task: reportgenerator@5
-      inputs:
-        reports: 'TestResults\Coverage\coverage.cobertura.xml'
-        targetdir: 'coveragereport'
-    - task: PublishCodeCoverageResults@1
-      inputs:
-        codeCoverageTool: 'Cobertura'
-        summaryFileLocation: 'TestResults\Coverage\coverage.cobertura.xml'
-    - task: DotNetCoreCLI@2
-      displayName: Publish
-      inputs:
-        command: publish
-        publishWebProjects: True
-        arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-        zipAfterPublish: True
+stages:
+- stage: Static_Code_Analysis
+  displayName: Static Code Analysis
+  jobs:
+    - job: SAST
+      steps:
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'DotNetDemoPipeline'
+          organization: 'demo-pipeline'
+          scannerMode: 'CLI'
+          configMode: 'manual'
+          cliProjectKey: 'DevOpsXperts-POC_DotNetDemoPipeline'
+          cliProjectName: 'DotNetDemoPipeline'
+          cliSources: '.'
+      - task: SonarCloudAnalyze@1
+      - task: SonarCloudPublish@1
+        inputs:
+          pollingTimeoutSec: '300'
 
-    - task: PublishBuildArtifacts@1
-      displayName: Publish Artifact (MyAppT.zip)
-      inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'       
+##################################################################################          
+
+- stage: Build
+  displayName: Project Build
+  jobs:
+    - job: Build_Project
+      steps:
+      - task: DotNetCoreCLI@2
+        displayName: Restore
+        inputs:
+          command: 'restore'
+          projects: '**/MyAppT.csproj'
+
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          projects: '**/MyAppT.csproj'
+          arguments: '--configuration $(BuildConfiguration)' 
+
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'publish'
+          publishWebProjects: true
+          arguments: '-o $(build.artifactStagingDirectory)'
+          zipAfterPublish: false
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: $(build.artifactStagingDirectory)
+          artifact: 'drop'
+          publishLocation: 'pipeline'
+
+############################################################################################
+- stage: Unit_Test
+  displayName: Running Unit Test
+  jobs:
+    - job: Unit_Test
+      steps:
+      - task: DotNetCoreCLI@2
+        displayName: Test
+        inputs:
+          command: 'test'
+          projects: 'TestingProject/TestingProject.csproj'
+          publishTestResults: true
+          arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
+        continueOnError: true  
+
+
+    # - task: reportgenerator@5
+    #   inputs:
+    #     reports: 'TestResults\Coverage\coverage.cobertura.xml'
+    #     targetdir: 'coveragereport'
+      - task: PublishCodeCoverageResults@1
+        inputs:
+          codeCoverageTool: 'Cobertura'
+          summaryFileLocation: 'TestResults\Coverage\coverage.cobertura.xml'
+
+
+   
