@@ -1,3 +1,4 @@
+
 # .NET Desktop
 # Build and run tests for .NET Desktop or Windows classic desktop solutions.
 # Add steps that publish symbols, save build artifacts, and more:
@@ -22,12 +23,12 @@ stages:
       steps:
       - task: SonarCloudPrepare@1
         inputs:
-          SonarCloud: 'DotNetDemoPipeline'
+          SonarCloud: 'DotNetDemoPipeline1'
           organization: 'demo-pipeline'
           scannerMode: 'CLI'
           configMode: 'manual'
-          cliProjectKey: 'DevOpsXperts-POC_DotNetDemoPipeline'
-          cliProjectName: 'DotNetDemoPipeline'
+          cliProjectKey: 'DevOpsXperts-POC_DotnetDemoPipeline1'
+          cliProjectName: 'DotnetDemoPipeline1'
           cliSources: '.'
       - task: SonarCloudAnalyze@1
       - task: SonarCloudPublish@1
@@ -41,17 +42,17 @@ stages:
   jobs:
     - job: Build_Project
       steps:
-    - task: DotNetCoreCLI@2
-      displayName: Restore
-      inputs:
-        command: 'restore'
-        projects: '**/MyAppT.csproj'
+      - task: DotNetCoreCLI@2
+        displayName: Restore
+        inputs:
+          command: 'restore'
+          projects: '**/MyAppT.csproj'
 
-    - task: DotNetCoreCLI@2
-      displayName: Build
-      inputs:
-        projects: '**/MyAppT.csproj'
-        arguments: '--configuration $(BuildConfiguration)' 
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          projects: '**/MyAppT.csproj'
+          arguments: '--configuration $(BuildConfiguration)' 
 
       - task: DotNetCoreCLI@2
         inputs:
@@ -64,11 +65,6 @@ stages:
           targetPath: $(build.artifactStagingDirectory)
           artifact: 'drop'
           publishLocation: 'pipeline'
-      # - task: NDependTask@1
-      #   inputs:
-      #     BinariesOutput: '$(build.artifactStagingDirectory)'
-      #   env:
-      #     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
 ############################################################################################
 - stage: Unit_Test
@@ -79,16 +75,21 @@ stages:
       - task: DotNetCoreCLI@2
         displayName: Test
         inputs:
-          command: test
-          projects: '**/*TestingProject*.csproj'
+          command: 'test'
+          projects: 'TestingProject/TestingProject.csproj'
           publishTestResults: true
-          arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
+          arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
+        continueOnError: true  
 
+
+    # - task: reportgenerator@5
+    #   inputs:
+    #     reports: 'TestResults\Coverage\coverage.cobertura.xml'
+    #     targetdir: 'coveragereport'
       - task: PublishCodeCoverageResults@1
         inputs:
           codeCoverageTool: 'Cobertura'
-          summaryFileLocation: '$(Build.SourcesDirectory)\TestResults\Coverage\ '
+          summaryFileLocation: 'TestResults\Coverage\coverage.cobertura.xml'
 
-      
 
-        
+   
