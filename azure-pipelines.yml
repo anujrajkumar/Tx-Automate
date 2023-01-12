@@ -23,12 +23,12 @@ stages:
       steps:
       - task: SonarCloudPrepare@1
         inputs:
-          SonarCloud: 'DotNetDemoPipeline'
+          SonarCloud: 'DotNetDemoPipeline1'
           organization: 'demo-pipeline'
           scannerMode: 'CLI'
           configMode: 'manual'
-          cliProjectKey: 'DevOpsXperts-POC_DotNetDemoPipeline'
-          cliProjectName: 'DotNetDemoPipeline'
+          cliProjectKey: 'DevOpsXperts-POC_DotnetDemoPipeline1'
+          cliProjectName: 'DotnetDemoPipeline1'
           cliSources: '.'
       - task: SonarCloudAnalyze@1
       - task: SonarCloudPublish@1
