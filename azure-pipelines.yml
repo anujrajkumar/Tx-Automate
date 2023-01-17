@@ -59,12 +59,11 @@ stages:
           command: 'publish'
           publishWebProjects: true
           arguments: '-o $(build.artifactStagingDirectory)'
-          zipAfterPublish: false
+          zipAfterPublish: true
       - task: PublishPipelineArtifact@1
         inputs:
           targetPath: $(build.artifactStagingDirectory)
           artifact: 'drop'
-          publishLocation: 'pipeline'
 
 ############################################################################################
 - stage: Unit_Test
