@@ -62,8 +62,9 @@ stages:
           zipAfterPublish: true
       - task: PublishPipelineArtifact@1
         inputs:
-          targetPath: $(build.artifactStagingDirectory)
+          targetPath: '$(build.artifactStagingDirectory)'
           artifact: 'drop'
+          publishLocation: 'pipeline'
 
 ############################################################################################
 - stage: Unit_Test
@@ -92,6 +93,66 @@ stages:
 
 ##########################################################################################################################
 
+# - stage: Infra
+#   condition: succeeded()
+#   jobs:
+#   - job: Infrastructure
+#     displayName: Publish Infra files Job
+#     pool:
+#       vmImage: 'windows-latest'
+#     steps:
+
+#     - task: replacetokens@3
+#       inputs:
+#         rootDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+#         targetFiles: |
+#           variables.tfvars
+#         encoding: 'auto'
+#         writeBOM: true
+#         actionOnMissing: 'warn'
+#         keepToken: false
+#         tokenPrefix: '__'
+#         tokenSuffix: '__'
+#         useLegacyPattern: false
+#         enableTransforms: false
+#         enableTelemetry: true
+#       displayName: Replace Token
+
+#     - task: TerraformInstaller@0
+#       inputs:
+#           terraformVersion: '1.0.2'
+
+#     - task: TerraformTaskV2@2
+#       inputs:
+#         provider: 'azurerm'
+#         command: 'init'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+#         backendServiceArm: '$(Subscription)'
+#         backendAzureRmResourceGroupName: '$(ContainerRG)'
+#         backendAzureRmStorageAccountName: '$(StorageAccountName)'
+#         backendAzureRmContainerName: '$(ContainerName)'
+#         backendAzureRmKey: 'selenium2.tfstate'
+      
+#     - task: TerraformTaskV2@2
+#       displayName: Terraform plan
+#       inputs:
+#         provider: 'azurerm'
+#         command: 'plan'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+#         commandOptions: '-var-file="$(System.DefaultWorkingDirectory)/Terraform/variables.tfvars" -out=tfplan -lock=false'
+#         environmentServiceNameAzureRM: '$(Subscription)'
+
+
+#     - task: TerraformTaskV2@2
+#       displayName: Terraform apply
+#       inputs:
+#         provider: 'azurerm'
+#         command: 'apply'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+#         commandOptions: 'tfplan'
+#         environmentServiceNameAzureRM: '$(Subscription)'
+
+###################################################################################################################
 - stage: Deploy_Stage
   displayName: Deploy Stage
   jobs:
@@ -108,7 +169,7 @@ stages:
         buildType: 'current'
         downloadType: 'single'
         artifactName: 'drop'
-        itemPattern: 
+        itemPattern: '**/MyAppT.zip'
         downloadPath: '$(System.DefaultWorkingDirectory)'
 
     - task: CmdLine@2
