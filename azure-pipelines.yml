@@ -109,7 +109,7 @@ stages:
         buildType: 'current'
         downloadType: 'single'
         artifactName: 'drop'
-        itemPattern: '**/WebApp.zip'
+        itemPattern: 
         downloadPath: '$(System.DefaultWorkingDirectory)'
 
     - task: CmdLine@2
