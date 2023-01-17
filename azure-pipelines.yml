@@ -58,7 +58,7 @@ stages:
         inputs:
           command: 'publish'
           publishWebProjects: true
-          arguments: '-o $(build.artifactStagingDirectory)'
+          arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
           zipAfterPublish: true
       - task: PublishPipelineArtifact@1
         inputs:
