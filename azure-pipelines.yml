@@ -17,80 +17,80 @@ variables:
   # buildConfiguration: 'Release'
 
 stages:
-- stage: Static_Code_Analysis
-  displayName: Static Code Analysis
-  jobs:
-    - job: SAST
-      steps:
-      - task: SonarCloudPrepare@1
-        inputs:
-          SonarCloud: 'DotNetDemoPipeline1'
-          organization: 'demo-pipeline'
-          scannerMode: 'CLI'
-          configMode: 'manual'
-          cliProjectKey: 'DevOpsXperts-POC_DotnetDemoPipeline1'
-          cliProjectName: 'DotnetDemoPipeline1'
-          cliSources: '.'
-      - task: SonarCloudAnalyze@1
-      - task: SonarCloudPublish@1
-        inputs:
-          pollingTimeoutSec: '300'
+# - stage: Static_Code_Analysis
+#   displayName: Static Code Analysis
+#   jobs:
+#     - job: SAST
+#       steps:
+#       - task: SonarCloudPrepare@1
+#         inputs:
+#           SonarCloud: 'DotNetDemoPipeline1'
+#           organization: 'demo-pipeline'
+#           scannerMode: 'CLI'
+#           configMode: 'manual'
+#           cliProjectKey: 'DevOpsXperts-POC_DotnetDemoPipeline1'
+#           cliProjectName: 'DotnetDemoPipeline1'
+#           cliSources: '.'
+#       - task: SonarCloudAnalyze@1
+#       - task: SonarCloudPublish@1
+#         inputs:
+#           pollingTimeoutSec: '300'
 
-##################################################################################          
+# ##################################################################################          
 
-- stage: Build
-  displayName: Project Build
-  jobs:
-    - job: Build_Project
-      steps:
-      - task: DotNetCoreCLI@2
-        displayName: Restore
-        inputs:
-          command: 'restore'
-          projects: '**/MyAppT.csproj'
+# - stage: Build
+#   displayName: Project Build
+#   jobs:
+#     - job: Build_Project
+#       steps:
+#       - task: DotNetCoreCLI@2
+#         displayName: Restore
+#         inputs:
+#           command: 'restore'
+#           projects: '**/MyAppT.csproj'
 
-      - task: DotNetCoreCLI@2
-        displayName: Build
-        inputs:
-          projects: '**/MyAppT.csproj'
-          arguments: '--configuration $(BuildConfiguration)' 
+#       - task: DotNetCoreCLI@2
+#         displayName: Build
+#         inputs:
+#           projects: '**/MyAppT.csproj'
+#           arguments: '--configuration $(BuildConfiguration)' 
 
-      - task: DotNetCoreCLI@2
-        inputs:
-          command: 'publish'
-          publishWebProjects: true
-          arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-          zipAfterPublish: true
-      - task: PublishPipelineArtifact@1
-        inputs:
-          targetPath: '$(build.artifactStagingDirectory)'
-          artifact: 'drop'
-          publishLocation: 'pipeline'
+#       - task: DotNetCoreCLI@2
+#         inputs:
+#           command: 'publish'
+#           publishWebProjects: true
+#           arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+#           zipAfterPublish: true
+#       - task: PublishPipelineArtifact@1
+#         inputs:
+#           targetPath: '$(build.artifactStagingDirectory)'
+#           artifact: 'drop'
+#           publishLocation: 'pipeline'
 
-############################################################################################
-- stage: Unit_Test
-  displayName: Running Unit Test
-  jobs:
-    - job: Unit_Test
-      steps:
-      - task: DotNetCoreCLI@2
-        displayName: Test
-        inputs:
-          command: 'test'
-          projects: 'TestingProject/TestingProject.csproj'
-          publishTestResults: true
-          arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
-        continueOnError: true  
+# ############################################################################################
+# - stage: Unit_Test
+#   displayName: Running Unit Test
+#   jobs:
+#     - job: Unit_Test
+#       steps:
+#       - task: DotNetCoreCLI@2
+#         displayName: Test
+#         inputs:
+#           command: 'test'
+#           projects: 'TestingProject/TestingProject.csproj'
+#           publishTestResults: true
+#           arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
+#         continueOnError: true  
 
 
-    # - task: reportgenerator@5
-    #   inputs:
-    #     reports: 'TestResults\Coverage\coverage.cobertura.xml'
-    #     targetdir: 'coveragereport'
-      - task: PublishCodeCoverageResults@1
-        inputs:
-          codeCoverageTool: 'Cobertura'
-          summaryFileLocation: 'TestResults\Coverage\coverage.cobertura.xml'
+#     # - task: reportgenerator@5
+#     #   inputs:
+#     #     reports: 'TestResults\Coverage\coverage.cobertura.xml'
+#     #     targetdir: 'coveragereport'
+#       - task: PublishCodeCoverageResults@1
+#         inputs:
+#           codeCoverageTool: 'Cobertura'
+#           summaryFileLocation: 'TestResults\Coverage\coverage.cobertura.xml'
 
 ##########################################################################################################################
 
