@@ -11,9 +11,10 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+- group: DotNetDemoPipeline
+  # solution: '**/*.sln'
+  # buildPlatform: 'Any CPU'
+  # buildConfiguration: 'Release'
 
 stages:
 - stage: Static_Code_Analysis
@@ -93,64 +94,64 @@ stages:
 
 ##########################################################################################################################
 
-# - stage: Infra
-#   condition: succeeded()
-#   jobs:
-#   - job: Infrastructure
-#     displayName: Publish Infra files Job
-#     pool:
-#       vmImage: 'windows-latest'
-#     steps:
+- stage: Infra
+  # condition: succeeded()
+  jobs:
+  - job: Infrastructure
+    displayName: Publish Infra files Job
+    pool:
+      vmImage: 'windows-latest'
+    steps:
 
-#     - task: replacetokens@3
-#       inputs:
-#         rootDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-#         targetFiles: |
-#           variables.tfvars
-#         encoding: 'auto'
-#         writeBOM: true
-#         actionOnMissing: 'warn'
-#         keepToken: false
-#         tokenPrefix: '__'
-#         tokenSuffix: '__'
-#         useLegacyPattern: false
-#         enableTransforms: false
-#         enableTelemetry: true
-#       displayName: Replace Token
+    - task: replacetokens@3
+      inputs:
+        rootDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+        targetFiles: |
+          variables.tfvars
+        encoding: 'auto'
+        writeBOM: true
+        actionOnMissing: 'warn'
+        keepToken: false
+        tokenPrefix: '__'
+        tokenSuffix: '__'
+        useLegacyPattern: false
+        enableTransforms: false
+        enableTelemetry: true
+      displayName: Replace Token
 
-#     - task: TerraformInstaller@0
-#       inputs:
-#           terraformVersion: '1.0.2'
+    - task: TerraformInstaller@0
+      inputs:
+          terraformVersion: '1.0.2'
 
-#     - task: TerraformTaskV2@2
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'init'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-#         backendServiceArm: '$(Subscription)'
-#         backendAzureRmResourceGroupName: '$(ContainerRG)'
-#         backendAzureRmStorageAccountName: '$(StorageAccountName)'
-#         backendAzureRmContainerName: '$(ContainerName)'
-#         backendAzureRmKey: 'selenium2.tfstate'
+    - task: TerraformTaskV2@2
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+        backendServiceArm: 'terraformstoragedemo7'
+        backendAzureRmResourceGroupName: '$(ContainerRG)'
+        backendAzureRmStorageAccountName: '$(StorageAccountName)'
+        backendAzureRmContainerName: '$(ContainerName)'
+        backendAzureRmKey: 'dotnetdemo.tfstate'
       
-#     - task: TerraformTaskV2@2
-#       displayName: Terraform plan
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'plan'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-#         commandOptions: '-var-file="$(System.DefaultWorkingDirectory)/Terraform/variables.tfvars" -out=tfplan -lock=false'
-#         environmentServiceNameAzureRM: '$(Subscription)'
+    - task: TerraformTaskV2@2
+      displayName: Terraform plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+        commandOptions: '-var-file="$(System.DefaultWorkingDirectory)/Terraform/variables.tfvars" -out=tfplan -lock=false'
+        environmentServiceNameAzureRM: 'terraformstoragedemo7'
 
 
-#     - task: TerraformTaskV2@2
-#       displayName: Terraform apply
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'apply'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-#         commandOptions: 'tfplan'
-#         environmentServiceNameAzureRM: '$(Subscription)'
+    - task: TerraformTaskV2@2
+      displayName: Terraform apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+        commandOptions: 'tfplan'
+        environmentServiceNameAzureRM: 'terraformstoragedemo7'
 
 ###################################################################################################################
 - stage: Deploy_Stage
