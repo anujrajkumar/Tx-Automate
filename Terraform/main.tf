@@ -4,7 +4,7 @@ terraform {
     resource_group_name  = "__tfstate_RG__"
     storage_account_name = "__tfstate_Storage__"
     container_name       = "__tfstate_Container__"
-    key                  = "selenium2.tfstate"
+    key                  = "dotnetdemo.tfstate"
   }
 }
 
