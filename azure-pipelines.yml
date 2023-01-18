@@ -134,7 +134,7 @@ stages:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-        backendServiceArm: 'terraformstoragedemo7'
+        backendServiceArm: '$(ARM_SUBSCRIPTION_ID)'
         backendAzureRmResourceGroupName: '$(ContainerRG)'
         backendAzureRmStorageAccountName: '$(StorageAccountName)'
         backendAzureRmContainerName: '$(ContainerName)'
@@ -147,7 +147,7 @@ stages:
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
         commandOptions: '-var-file="$(System.DefaultWorkingDirectory)/Terraform/variables.tfvars" -out=tfplan -lock=false'
-        environmentServiceNameAzureRM: 'terraformstoragedemo7'
+        environmentServiceNameAzureRM: '$(ARM_SUBSCRIPTION_ID)'
 
 
     - task: TerraformTaskV2@2
