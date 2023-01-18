@@ -176,13 +176,13 @@ stages:
         buildType: 'current'
         downloadType: 'single'
         artifactName: 'drop'
-        itemPattern: '**/MyAppT.zip'
+        # itemPattern: '**/MyAppT.zip'
         downloadPath: '$(System.DefaultWorkingDirectory)'
 
-    - task: CmdLine@2
-      inputs:
-        script: |
-          ls $(System.DefaultWorkingDirectory)
+    # - task: CmdLine@2
+    #   inputs:
+    #     script: |
+    #       ls $(System.DefaultWorkingDirectory)
  
     - task: AzureRmWebAppDeployment@4
       inputs:
@@ -190,6 +190,6 @@ stages:
         azureSubscription: 'Microsoft Partner Network(55cf0ba9-e3c1-4ced-b5e9-5abb7b4d39b1)'
         appType: 'webApp'
         WebAppName: 'DotNetDemoAppService'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/drop/*.zip'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
         JSONFiles: '**/appsettings.json'
    
