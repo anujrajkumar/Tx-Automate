@@ -169,15 +169,19 @@ stages:
       vmImage: 'windows-latest'
     steps:
     - checkout: none
-
-    - task: DownloadBuildArtifacts@0    
-      displayName: Download WebApp.zip
+    - task: DownloadPipelineArtifact@2
       inputs:
         buildType: 'current'
-        downloadType: 'single'
         artifactName: 'drop'
-        # itemPattern: '**/MyAppT.zip'
-        downloadPath: '$(System.DefaultWorkingDirectory)'
+        targetPath: '$(Pipeline.Workspace)'
+    # - task: DownloadBuildArtifacts@0    
+    #   displayName: Download WebApp.zip
+    #   inputs:
+    #     buildType: 'current'
+    #     downloadType: 'single'
+    #     artifactName: 'drop'
+    #     # itemPattern: '**/MyAppT.zip'
+    #     downloadPath: '$(System.DefaultWorkingDirectory)'
 
     # - task: CmdLine@2
     #   inputs:
@@ -190,6 +194,6 @@ stages:
         azureSubscription: 'Microsoft Partner Network(55cf0ba9-e3c1-4ced-b5e9-5abb7b4d39b1)'
         appType: 'webApp'
         WebAppName: 'DotNetDemoAppService'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         JSONFiles: '**/appsettings.json'
    
