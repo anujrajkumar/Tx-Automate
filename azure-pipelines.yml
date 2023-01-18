@@ -169,19 +169,15 @@ stages:
       vmImage: 'windows-latest'
     steps:
     - checkout: none
-    - task: DownloadPipelineArtifact@2
+
+    - task: DownloadBuildArtifacts@0    
+      displayName: Download WebApp.zip
       inputs:
         buildType: 'current'
+        downloadType: 'single'
         artifactName: 'drop'
-        targetPath: '$(Pipeline.Workspace)'
-    # - task: DownloadBuildArtifacts@0    
-    #   displayName: Download WebApp.zip
-    #   inputs:
-    #     buildType: 'current'
-    #     downloadType: 'single'
-    #     artifactName: 'drop'
-    #     # itemPattern: '**/MyAppT.zip'
-    #     downloadPath: '$(System.DefaultWorkingDirectory)'
+        # itemPattern: '**/MyAppT.zip'
+        downloadPath: '$(System.DefaultWorkingDirectory)'
 
     # - task: CmdLine@2
     #   inputs:
