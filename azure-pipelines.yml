@@ -151,7 +151,7 @@ stages:
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
         commandOptions: 'tfplan'
-        environmentServiceNameAzureRM: 'terraformstoragedemo7'
+        environmentServiceNameAzureRM: 'Microsoft Partner Network(9)(55cf0ba9-e3c1-4ced-b5e9-5abb7b4d39b1)'
 
 ###################################################################################################################
 - stage: Deploy_Stage
