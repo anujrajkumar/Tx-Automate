@@ -1,9 +1,7 @@
 terraform {
   required_version = ">= 0.13" 
   backend "azurerm" {
-    resource_group_name  = "__tfstate_RG__"
-    storage_account_name = "__tfstate_Storage__"
-    container_name       = "__tfstate_Container__"
+    container_name       = "tfstatefile"
     key                  = "dotnetdemo.tfstate"
   }
 }
