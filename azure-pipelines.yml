@@ -179,7 +179,7 @@ stages:
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
-        azureSubscription: 'Microsoft Partner Network(55cf0ba9-e3c1-4ced-b5e9-5abb7b4d39b1)'
+        azureSubscription: '$(ARM_SUBSCRIPTION_ID)'
         appType: 'webApp'
         WebAppName: 'DotNetDemoAppService'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
