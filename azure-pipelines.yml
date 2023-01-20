@@ -170,19 +170,11 @@ stages:
     steps:
     - checkout: none
 
-    - task: DownloadBuildArtifacts@0    
-      displayName: Download WebApp.zip
+    - task: DownloadPipelineArtifact@2
       inputs:
         buildType: 'current'
-        downloadType: 'single'
         artifactName: 'drop'
-        # itemPattern: '**/MyAppT.zip'
-        downloadPath: '$(System.DefaultWorkingDirectory)'
-
-    # - task: CmdLine@2
-    #   inputs:
-    #     script: |
-    #       ls $(System.DefaultWorkingDirectory)
+        targetPath: '$(Pipeline.Workspace)'
  
     - task: AzureRmWebAppDeployment@4
       inputs:
