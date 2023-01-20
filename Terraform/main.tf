@@ -5,7 +5,6 @@ terraform {
     storage_account_name = "__tfstate_Storage__"
     container_name       = "__tfstate_Container__"
     key                  = "dotnetdemo.tfstate"
-    access_key           = "__key__"
   }
 }
 
