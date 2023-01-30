@@ -184,4 +184,33 @@ stages:
         WebAppName: 'DotNetDemoAppService'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         JSONFiles: '**/appsettings.json'
-   
+
+######################################################################################################################
+
+- stage: Destroying_Infra
+  dependsOn: Deploy_Stage
+  jobs:
+  - job: Manual_Vaidation
+    displayName: Manual Validation
+    pool: server
+    timeoutInMinutes: 4320 
+    steps:
+      
+      - task: ManualValidation@0
+        inputs:
+          notifyUsers: 'anuj.kumar@testingxperts.com'
+          instructions: 'Please permit the job for further process'
+          onTimeout: 'resume'
+
+  - job: Infra_Destroy
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: '$(ARM_SUBSCRIPTION_ID)'
+        scriptType: 'ps'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+            Connect-AzAccount
+             az group delete --name $(rg)  --yes
+        powerShellErrorActionPreference: 'silentlyContinue'
+    displayName: "Deleting the Infrastructure"  
