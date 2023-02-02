@@ -211,6 +211,40 @@ stages:
 
 ######################################################################################################################
 
+- stage: UI_test
+  displayName: Selenium UI Testing 
+  # dependsOn: Deploy_Stage
+  jobs:
+  - job: UI_Testing
+    displayName: Automation Testing
+    pool: 
+      vmImage: 'windows-latest'
+    steps:
+      - task: DownloadBuildArtifacts@0    
+        displayName: Download Selenium Tests
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'ui-tests'
+          itemPattern: ''
+          downloadPath: '$(System.DefaultWorkingDirectory)'
+
+
+      # - task: VSTest@2
+      #   displayName: Selenium UI Tests
+      #   inputs:
+      #     testSelector: 'testAssemblies'
+      #     searchFolder: '$(System.DefaultWorkingDirectory)/ui-tests'
+      #     # runSettingsFile: '$(System.DefaultWorkingDirectory)/ui-tests/.runsettings'
+      #     # overrideTestrunParameters: '-webAppUrl $(WebAppNameUrl)'
+      #     testAssemblyVer2: |
+      #       **\*Test*.dll 
+      #       !**\*TestAdapter.dll 
+      #       !**\obj\**
+      #     runInParallel: false
+      #     codeCoverageEnabled: false
+
+######################################################################################################################################################
 - stage: Destroying_Infra
   dependsOn: Deploy_Stage
   jobs:
