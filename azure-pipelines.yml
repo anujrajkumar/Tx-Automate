@@ -78,14 +78,19 @@ stages:
         demands: msbuild
 
       steps:
-      - task: NuGetToolInstaller@0
-        displayName: Use NuGet
+      # - task: NuGetToolInstaller@0
+      #   displayName: Use NuGet
 
-      - task: NuGetCommand@2
-        displayName: NuGet restore
+      # - task: NuGetCommand@2
+      #   displayName: NuGet restore
+      #   inputs:
+      #     restoreSolution: MyAppT.sln
+      - task: UseDotNet@2
+        displayName: 'Install .NET Core SDK'
         inputs:
-          restoreSolution: MyAppT.sln
-
+          version: 5.x
+          performMultiLevelLookup: true
+          includePreviewVersions: true # Required for preview versions
       - task: MSBuild@1
         displayName: Build project SeleniumUiTest
         inputs:
