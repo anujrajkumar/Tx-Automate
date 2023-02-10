@@ -103,11 +103,17 @@ stages:
   jobs:
     - job: Unit_Test
       steps:
-      - task: DotNetCoreCLI@2
-        displayName: Restore
+      # - task: DotNetCoreCLI@2
+      #   displayName: Restore
+      #   inputs:
+      #     command: 'restore'
+      #     projects: '**/MyAppT.csproj'
+      - task: NuGetToolInstaller@0
+        displayName: Use NuGet    
+      - task: NuGetCommand@2
+        displayName: NuGet restore
         inputs:
-          command: 'restore'
-          projects: '**/MyAppT.csproj'
+          restoreSolution: MyAppT.sln
       - task: DotNetCoreCLI@2
         displayName: Test
         inputs:
