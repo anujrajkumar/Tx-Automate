@@ -230,19 +230,19 @@ stages:
           downloadPath: '$(System.DefaultWorkingDirectory)'
 
 
-      # - task: VSTest@2
-      #   displayName: Selenium UI Tests
-      #   inputs:
-      #     testSelector: 'testAssemblies'
-      #     searchFolder: '$(System.DefaultWorkingDirectory)/ui-tests'
-      #     # runSettingsFile: '$(System.DefaultWorkingDirectory)/ui-tests/.runsettings'
-      #     # overrideTestrunParameters: '-webAppUrl $(WebAppNameUrl)'
-      #     testAssemblyVer2: |
-      #       **\*Test*.dll 
-      #       !**\*TestAdapter.dll 
-      #       !**\obj\**
-      #     runInParallel: false
-      #     codeCoverageEnabled: false
+      - task: VSTest@2
+        displayName: Selenium UI Tests
+        inputs:
+          testSelector: 'testAssemblies'
+          searchFolder: '$(System.DefaultWorkingDirectory)/ui-tests'
+          # runSettingsFile: '$(System.DefaultWorkingDirectory)/ui-tests/.runsettings'
+          # overrideTestrunParameters: '-webAppUrl $(WebAppNameUrl)'
+          testAssemblyVer2: |
+            **\*Test*.dll 
+            !**\*TestAdapter.dll 
+            !**\obj\**
+          runInParallel: false
+          codeCoverageEnabled: false
 
 ######################################################################################################################################################
 - stage: Destroying_Infra
