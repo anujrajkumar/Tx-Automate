@@ -104,6 +104,11 @@ stages:
     - job: Unit_Test
       steps:
       - task: DotNetCoreCLI@2
+        displayName: Restore
+        inputs:
+          command: 'restore'
+          projects: '**/MyAppT.csproj'
+      - task: DotNetCoreCLI@2
         displayName: Test
         inputs:
           command: 'test'
@@ -162,7 +167,7 @@ stages:
         backendAzureRmResourceGroupName: '$(ContainerRG)'
         backendAzureRmStorageAccountName: '$(StorageAccountName)'
         backendAzureRmContainerName: '$(ContainerName)'
-        backendAzureRmKey: 'dotnetdemo.tfstate'
+        backendAzureRmKey: 'DotNetDemo.tfstate'
       
     - task: TerraformTaskV2@2
       displayName: Terraform plan
