@@ -203,27 +203,28 @@ stages:
 - stage: Deploy_Stage
   displayName: Deploy Stage
   jobs:
-  - job: Deploy
-    displayName: Deploy to Web App
-    pool: 
-      vmImage: 'windows-latest'
-    steps:
-    - checkout: none
+  - deployment: DotNetDemo
+    displayName: Deploying DotNetCore App
+    environment: DoTNetDemo
+    strategy:
+          runOnce:
+            deploy:
+              steps:
+              - task: DownloadPipelineArtifact@2
+                inputs:
+                  buildType: 'current'
+                  artifactName: 'drop'
+                  targetPath: '$(Pipeline.Workspace)'
 
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        buildType: 'current'
-        artifactName: 'drop'
-        targetPath: '$(Pipeline.Workspace)'
  
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: '$(ARM_SUBSCRIPTION_ID)'
-        appType: 'webApp'
-        WebAppName: 'DotNetDemoAppService'
-        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-        JSONFiles: '**/appsettings.json'
+              - task: AzureRmWebAppDeployment@4
+                inputs:
+                  ConnectionType: 'AzureRM'
+                  azureSubscription: '$(ARM_SUBSCRIPTION_ID)'
+                  appType: 'webApp'
+                  WebAppName: 'DotNetDemoAppService'
+                  packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+                  JSONFiles: '**/appsettings.json'
 
 ######################################################################################################################
 
