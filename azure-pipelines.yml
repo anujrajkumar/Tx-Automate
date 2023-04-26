@@ -46,7 +46,14 @@ stages:
   jobs:
     - job: Build_Project
       steps:
-      
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'Docker-Emp'
+          repository: 'anuj730/jpipeline_demo'
+          command: 'buildAndPush'
+          Dockerfile: 'MyAppT/Dockerfile'
+          tags: 'latest'
+        displayName: Pushing image on Dockerhub
 
     - job: Selenium
       displayName: Building UI Tests Job
