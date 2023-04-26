@@ -48,7 +48,7 @@ stages:
       steps:
       - task: Docker@2
         inputs:
-          containerRegistry: 'Docker-Emp'
+          containerRegistry: 'DockerDotNetDemo'
           repository: 'anuj730/jpipeline_demo'
           command: 'buildAndPush'
           Dockerfile: 'MyAppT/Dockerfile'
