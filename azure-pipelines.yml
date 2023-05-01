@@ -185,22 +185,22 @@ stages:
 #         environmentServiceNameAzureRM: '$(ARM_SUBSCRIPTION_ID)'
 
 # ###################################################################################################################
-- stage: Deploy_Stage
-  displayName: Deploy Stage
-  jobs:
-  - deployment: DotNetDemo
-    displayName: Deploying DotNetCore App
-    environment: DoTNetDemo
-    strategy:
-          runOnce:
-            deploy:
-              steps:
-              - task: SSH@0
-                inputs:
-                  sshEndpoint: 'DotNetDemoSSH'
-                  runOptions: 'inline'
-                  inline: 'docker run -d -it  -p 80:80/tcp --name DotNetDemo anuj730/jpipeline_demo:7592'
-                  readyTimeout: '20000'
+# - stage: Deploy_Stage
+#   displayName: Deploy Stage
+#   jobs:
+#   - deployment: DotNetDemo
+#     displayName: Deploying DotNetCore App
+#     environment: DoTNetDemo
+#     strategy:
+#           runOnce:
+#             deploy:
+#               steps:
+#               - task: SSH@0
+#                 inputs:
+#                   sshEndpoint: 'DotNetDemoSSH'
+#                   runOptions: 'inline'
+#                   inline: 'docker run -d -it  -p 80:80/tcp --name DotNetDemo anuj730/jpipeline_demo:7592'
+#                   readyTimeout: '20000'
               # - task: DownloadPipelineArtifact@2
               #   inputs:
               #     buildType: 'current'
