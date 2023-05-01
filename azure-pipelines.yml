@@ -61,32 +61,34 @@ stages:
             cd MyAppT/
             docker build -t anuj730/dotnetdemo .
             docker images
+            docker login -u $(USER_NAME) -p $(PASSWORD)
+            docker push anuj730/dotnetdemo:latest
 
-    - job: Selenium
-      displayName: Building UI Tests Job
-      pool:
-        name: Hosted Windows 2019 with VS2019 
-        vmImage: 'windows-2019'
-        demands: msbuild
+    # - job: Selenium
+    #   displayName: Building UI Tests Job
+    #   pool:
+    #     name: Hosted Windows 2019 with VS2019 
+    #     vmImage: 'windows-2019'
+    #     demands: msbuild
 
-      steps:
-      - task: NuGetToolInstaller@0
-        displayName: Use NuGet
+    #   steps:
+    #   - task: NuGetToolInstaller@0
+    #     displayName: Use NuGet
 
-      - task: NuGetCommand@2
-        displayName: NuGet restore
-        inputs:
-          restoreSolution: MyAppT.sln
-      - task: MSBuild@1
-        displayName: Build project SeleniumUiTest
-        inputs:
-          solution: UITestingProject/UITestingProject.csproj
-          msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
+    #   - task: NuGetCommand@2
+    #     displayName: NuGet restore
+    #     inputs:
+    #       restoreSolution: MyAppT.sln
+    #   - task: MSBuild@1
+    #     displayName: Build project SeleniumUiTest
+    #     inputs:
+    #       solution: UITestingProject/UITestingProject.csproj
+    #       msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
 
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifact: UI-Test'
-        inputs:
-          ArtifactName: ui-tests
+    #   - task: PublishBuildArtifacts@1
+    #     displayName: 'Publish Artifact: UI-Test'
+    #     inputs:
+    #       ArtifactName: ui-tests
 
 ############################################################################################
 - stage: Unit_Test
