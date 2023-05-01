@@ -23,7 +23,7 @@ namespace UITestingProject
         [Fact]
         public void Create_GET_ReturnsCreateView()
         {
-            driver.Navigate().GoToUrl("http://dotnetdemoappservice.azurewebsites.net/Register/Create");
+            driver.Navigate().GoToUrl("http://54.236.246.7/Register/Create");
 
             Assert.Equal("Create Record - MyAppT", driver.Title);
             Assert.Contains("Create Record", driver.PageSource);
@@ -32,7 +32,7 @@ namespace UITestingProject
         [Fact]
         public void Create_POST_InvalidModel()
         {
-            driver.Navigate().GoToUrl("http://dotnetdemoappservice.azurewebsites.net/Register/Create");
+            driver.Navigate().GoToUrl("http://54.236.246.7/Register/Create");
 
             driver.FindElement(By.Id("Name")).SendKeys("Test");
 
@@ -48,7 +48,7 @@ namespace UITestingProject
         [Fact]
         public void Create_POST_ValidModel()
         {
-            driver.Navigate().GoToUrl("http://dotnetdemoappservice.azurewebsites.net/Register/Create");
+            driver.Navigate().GoToUrl("http://54.236.246.7/Register/Create");
 
             driver.FindElement(By.Id("Name")).SendKeys("Test");
 
