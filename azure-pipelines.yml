@@ -46,23 +46,29 @@ stages:
   jobs:
     - job: Build_Project
       steps:
-      - task: DockerInstaller@0
+      - task: Docker@2
         inputs:
-          dockerVersion: '17.09.0-ce'
+          containerRegistry: 'DockerDotNetDemo'
+          repository: 'anuj730/jpipeline_demo'
+          command: 'buildAndPush'
+          Dockerfile: 'MyAppT/Dockerfile'
+      # - task: DockerInstaller@0
+      #   inputs:
+      #     dockerVersion: '17.09.0-ce'
       
-      - task: Bash@3
-        inputs:
-          targetType: 'inline'
-          script: |
-            # Write your commands here
+      # - task: Bash@3
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: |
+      #       # Write your commands here
             
-            echo 'Hello world'
+      #       echo 'Hello world'
             
-            cd MyAppT/
-            docker build -t anuj730/dotnetdemo .
-            docker images
-            docker login -u $(USER_NAME) -p $(PASSWORD)
-            docker push anuj730/dotnetdemo:latest
+      #       cd MyAppT/
+      #       docker build -t anuj730/dotnetdemo .
+      #       docker images
+      #       docker login -u $(USER_NAME) -p $(PASSWORD)
+      #       docker push anuj730/dotnetdemo:latest
 
     # - job: Selenium
     #   displayName: Building UI Tests Job
