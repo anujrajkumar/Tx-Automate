@@ -52,49 +52,34 @@ stages:
           repository: 'anuj730/jpipeline_demo'
           command: 'buildAndPush'
           Dockerfile: 'MyAppT/Dockerfile'
-      # - task: DockerInstaller@0
-      #   inputs:
-      #     dockerVersion: '17.09.0-ce'
-      
-      # - task: Bash@3
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: |
-      #       # Write your commands here
-            
-      #       echo 'Hello world'
-            
-      #       cd MyAppT/
-      #       docker build -t anuj730/dotnetdemo .
-      #       docker images
-      #       docker login -u $(USER_NAME) -p $(PASSWORD)
-      #       docker push anuj730/dotnetdemo:latest
+          tags: 'DotNetDemo-$(Build.BuildId)'
 
-    # - job: Selenium
-    #   displayName: Building UI Tests Job
-    #   pool:
-    #     name: Hosted Windows 2019 with VS2019 
-    #     vmImage: 'windows-2019'
-    #     demands: msbuild
 
-    #   steps:
-    #   - task: NuGetToolInstaller@0
-    #     displayName: Use NuGet
+    - job: Selenium
+      displayName: Building UI Tests Job
+      pool:
+        name: Hosted Windows 2019 with VS2019 
+        vmImage: 'windows-2019'
+        demands: msbuild
 
-    #   - task: NuGetCommand@2
-    #     displayName: NuGet restore
-    #     inputs:
-    #       restoreSolution: MyAppT.sln
-    #   - task: MSBuild@1
-    #     displayName: Build project SeleniumUiTest
-    #     inputs:
-    #       solution: UITestingProject/UITestingProject.csproj
-    #       msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
+      steps:
+      - task: NuGetToolInstaller@0
+        displayName: Use NuGet
 
-    #   - task: PublishBuildArtifacts@1
-    #     displayName: 'Publish Artifact: UI-Test'
-    #     inputs:
-    #       ArtifactName: ui-tests
+      - task: NuGetCommand@2
+        displayName: NuGet restore
+        inputs:
+          restoreSolution: MyAppT.sln
+      - task: MSBuild@1
+        displayName: Build project SeleniumUiTest
+        inputs:
+          solution: UITestingProject/UITestingProject.csproj
+          msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: UI-Test'
+        inputs:
+          ArtifactName: ui-tests
 
 ############################################################################################
 - stage: Unit_Test
@@ -200,31 +185,37 @@ stages:
 #         environmentServiceNameAzureRM: '$(ARM_SUBSCRIPTION_ID)'
 
 # ###################################################################################################################
-# - stage: Deploy_Stage
-#   displayName: Deploy Stage
-#   jobs:
-#   - deployment: DotNetDemo
-#     displayName: Deploying DotNetCore App
-#     environment: DoTNetDemo
-#     strategy:
-#           runOnce:
-#             deploy:
-#               steps:
-#               - task: DownloadPipelineArtifact@2
-#                 inputs:
-#                   buildType: 'current'
-#                   artifactName: 'drop'
-#                   targetPath: '$(Pipeline.Workspace)'
+- stage: Deploy_Stage
+  displayName: Deploy Stage
+  jobs:
+  - deployment: DotNetDemo
+    displayName: Deploying DotNetCore App
+    environment: DoTNetDemo
+    strategy:
+          runOnce:
+            deploy:
+              steps:
+              - task: SSH@0
+                inputs:
+                  sshEndpoint: 'DotNetDemoSSH'
+                  runOptions: 'inline'
+                  inline: 'docker run -d -it  -p 80:80/tcp --name DotNetDemo anuj730/jpipeline_demo:7592'
+                  readyTimeout: '20000'
+              # - task: DownloadPipelineArtifact@2
+              #   inputs:
+              #     buildType: 'current'
+              #     artifactName: 'drop'
+              #     targetPath: '$(Pipeline.Workspace)'
 
  
-#               - task: AzureRmWebAppDeployment@4
-#                 inputs:
-#                   ConnectionType: 'AzureRM'
-#                   azureSubscription: '$(ARM_SUBSCRIPTION_ID)'
-#                   appType: 'webApp'
-#                   WebAppName: 'DotNetDemoAppService'
-#                   packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-#                   JSONFiles: '**/appsettings.json'
+              # - task: AzureRmWebAppDeployment@4
+              #   inputs:
+              #     ConnectionType: 'AzureRM'
+              #     azureSubscription: '$(ARM_SUBSCRIPTION_ID)'
+              #     appType: 'webApp'
+              #     WebAppName: 'DotNetDemoAppService'
+              #     packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+              #     JSONFiles: '**/appsettings.json'
 
 # ######################################################################################################################
 
