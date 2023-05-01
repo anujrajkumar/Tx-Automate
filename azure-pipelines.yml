@@ -8,12 +8,16 @@ trigger:
 - none
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+- group: DotNetDemoPipeline
+- name: solution
+  value: '**/*.sln'
+- name: buildPlatform
+  value: 'Any CPU'
+- name: buildConfiguration
+  value: 'Release'
 
 stages:
 - stage: Static_Code_Analysis
@@ -37,34 +41,45 @@ stages:
 
 ##################################################################################          
 
-- stage: Build
+- stage: Docker_Build
   displayName: Project Build
   jobs:
     - job: Build_Project
       steps:
-      - task: DotNetCoreCLI@2
-        displayName: Restore
+      - task: Docker@2
         inputs:
-          command: 'restore'
-          projects: '**/MyAppT.csproj'
+          containerRegistry: 'DockerDotNetDemo'
+          repository: 'anuj730/jpipeline_demo'
+          command: 'buildAndPush'
+          Dockerfile: 'MyAppT/Dockerfile'
+          tags: 'DotNetDemo-$(Build.BuildId)'
 
-      - task: DotNetCoreCLI@2
-        displayName: Build
-        inputs:
-          projects: '**/MyAppT.csproj'
-          arguments: '--configuration $(BuildConfiguration)' 
 
-      - task: DotNetCoreCLI@2
+    - job: Selenium
+      displayName: Building UI Tests Job
+      pool:
+        name: Hosted Windows 2019 with VS2019 
+        vmImage: 'windows-2019'
+        demands: msbuild
+
+      steps:
+      - task: NuGetToolInstaller@0
+        displayName: Use NuGet
+
+      - task: NuGetCommand@2
+        displayName: NuGet restore
         inputs:
-          command: 'publish'
-          publishWebProjects: true
-          arguments: '-o $(build.artifactStagingDirectory)'
-          zipAfterPublish: false
-      - task: PublishPipelineArtifact@1
+          restoreSolution: MyAppT.sln
+      - task: MSBuild@1
+        displayName: Build project SeleniumUiTest
         inputs:
-          targetPath: $(build.artifactStagingDirectory)
-          artifact: 'drop'
-          publishLocation: 'pipeline'
+          solution: UITestingProject/UITestingProject.csproj
+          msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: UI-Test'
+        inputs:
+          ArtifactName: ui-tests
 
 ############################################################################################
 - stage: Unit_Test
@@ -72,6 +87,23 @@ stages:
   jobs:
     - job: Unit_Test
       steps:
+      # - task: DotNetCoreCLI@2
+      #   displayName: Restore
+      #   inputs:
+      #     command: 'restore'
+      #     projects: '**/MyAppT.csproj'
+      # - task: NuGetToolInstaller@0
+      #   displayName: Use NuGet    
+      # - task: NuGetCommand@2
+      #   displayName: NuGet restore
+      #   inputs:
+      #     restoreSolution: MyAppT.sln
+      - task: UseDotNet@2
+        displayName: 'Install .NET Core SDK'
+        inputs:
+          version: 5.x
+          performMultiLevelLookup: true
+          includePreviewVersions: true
       - task: DotNetCoreCLI@2
         displayName: Test
         inputs:
@@ -93,36 +125,158 @@ stages:
 
 ##########################################################################################################################
 
+# - stage: Infra
+#   # condition: succeeded()
+#   jobs:
+#   - job: Infrastructure
+#     displayName: Publish Infra files Job
+#     pool:
+#       vmImage: 'windows-latest'
+#     steps:
+
+#     - task: replacetokens@3
+#       inputs:
+#         rootDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+#         targetFiles: |
+#           variables.tfvars
+#         encoding: 'auto'
+#         writeBOM: true
+#         actionOnMissing: 'warn'
+#         keepToken: false
+#         tokenPrefix: '__'
+#         tokenSuffix: '__'
+#         useLegacyPattern: false
+#         enableTransforms: false
+#         enableTelemetry: true
+#       displayName: Replace Token
+
+#     - task: TerraformInstaller@0
+#       inputs:
+#           terraformVersion: '1.0.2'
+
+#     - task: TerraformTaskV2@2
+#       inputs:
+#         provider: 'azurerm'
+#         command: 'init'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+#         backendServiceArm: '$(ARM_SUBSCRIPTION_ID)'
+#         backendAzureRmResourceGroupName: '$(ContainerRG)'
+#         backendAzureRmStorageAccountName: '$(StorageAccountName)'
+#         backendAzureRmContainerName: '$(ContainerName)'
+#         backendAzureRmKey: 'DotNetDemo.tfstate'
+      
+#     - task: TerraformTaskV2@2
+#       displayName: Terraform plan
+#       inputs:
+#         provider: 'azurerm'
+#         command: 'plan'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+#         commandOptions: '-var-file="$(System.DefaultWorkingDirectory)/Terraform/variables.tfvars" -out=tfplan -lock=false'
+#         environmentServiceNameAzureRM: '$(ARM_SUBSCRIPTION_ID)'
+
+
+#     - task: TerraformTaskV2@2
+#       displayName: Terraform apply
+#       inputs:
+#         provider: 'azurerm'
+#         command: 'apply'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+#         commandOptions: 'tfplan'
+#         environmentServiceNameAzureRM: '$(ARM_SUBSCRIPTION_ID)'
+
+# ###################################################################################################################
 # - stage: Deploy_Stage
 #   displayName: Deploy Stage
 #   jobs:
-#   - job: Deploy
-#     displayName: Deploy to Web App
-#     pool: 
-#       vmImage: 'windows-latest'
-#     steps:
-#     - checkout: none
+#   - deployment: DotNetDemo
+#     displayName: Deploying DotNetCore App
+#     environment: DoTNetDemo
+#     strategy:
+#           runOnce:
+#             deploy:
+#               steps:
+#               - task: SSH@0
+#                 inputs:
+#                   sshEndpoint: 'DotNetDemoSSH'
+#                   runOptions: 'inline'
+#                   inline: 'docker run -d -it  -p 80:80/tcp --name DotNetDemo anuj730/jpipeline_demo:7592'
+#                   readyTimeout: '20000'
+              # - task: DownloadPipelineArtifact@2
+              #   inputs:
+              #     buildType: 'current'
+              #     artifactName: 'drop'
+              #     targetPath: '$(Pipeline.Workspace)'
 
-#     - task: DownloadBuildArtifacts@0    
-#       displayName: Download WebApp.zip
-#       inputs:
-#         buildType: 'current'
-#         downloadType: 'single'
-#         artifactName: 'drop'
-#         itemPattern: '**/WebApp.zip'
-#         downloadPath: '$(System.DefaultWorkingDirectory)'
-
-#     - task: CmdLine@2
-#       inputs:
-#         script: |
-#           ls $(System.DefaultWorkingDirectory)
  
-#     # - task: AzureRmWebAppDeployment@4
-#     #   inputs:
-#     #     ConnectionType: 'AzureRM'
-#     #     azureSubscription: 'Microsoft Partner Network(55cf0ba9-e3c1-4ced-b5e9-5abb7b4d39b1)'
-#     #     appType: 'webApp'
-#     #     WebAppName: 'demoapp-service'
-#     #     packageForLinux: '$(System.DefaultWorkingDirectory)/drop/WebApp.zip'
-#     #     JSONFiles: '**/appsettings.json'
-   
+              # - task: AzureRmWebAppDeployment@4
+              #   inputs:
+              #     ConnectionType: 'AzureRM'
+              #     azureSubscription: '$(ARM_SUBSCRIPTION_ID)'
+              #     appType: 'webApp'
+              #     WebAppName: 'DotNetDemoAppService'
+              #     packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+              #     JSONFiles: '**/appsettings.json'
+
+# ######################################################################################################################
+
+- stage: UI_test
+  displayName: Selenium UI Testing 
+  # dependsOn: Deploy_Stage
+  jobs:
+  - job: UI_Testing
+    displayName: Automation Testing
+    pool: 
+      vmImage: 'windows-latest'
+    steps:
+      - task: DownloadBuildArtifacts@0    
+        displayName: Download Selenium Tests
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'ui-tests'
+          itemPattern: ''
+          downloadPath: '$(System.DefaultWorkingDirectory)'
+
+
+      - task: VSTest@2
+        displayName: Selenium UI Tests
+        inputs:
+          testSelector: 'testAssemblies'
+          searchFolder: '$(System.DefaultWorkingDirectory)/ui-tests'
+          # runSettingsFile: '$(System.DefaultWorkingDirectory)/ui-tests/.runsettings'
+          # overrideTestrunParameters: '-webAppUrl $(WebAppNameUrl)'
+          testAssemblyVer2: |
+            **\*Test*.dll 
+            !**\*TestAdapter.dll 
+            !**\obj\**
+          runInParallel: false
+          codeCoverageEnabled: false
+
+# ######################################################################################################################################################
+# - stage: Destroying_Infra
+#   dependsOn: Deploy_Stage
+#   jobs:
+#   - job: Manual_Vaidation
+#     displayName: Manual Validation
+#     pool: server
+#     timeoutInMinutes: 4320 
+#     steps:
+      
+#       - task: ManualValidation@0
+#         inputs:
+#           notifyUsers: 'anuj.kumar@testingxperts.com'
+#           instructions: 'Please permit the job for further process'
+#           onTimeout: 'resume'
+
+#   - job: Infra_Destroy
+#     steps:
+#     - task: AzureCLI@2
+#       inputs:
+#         azureSubscription: '$(ARM_SUBSCRIPTION_ID)'
+#         scriptType: 'ps'
+#         scriptLocation: 'inlineScript'
+#         inlineScript: |
+#             Connect-AzAccount
+#              az group delete --name $(rg)  --yes
+#         powerShellErrorActionPreference: 'silentlyContinue'
+#     displayName: "Deleting the Infrastructure"  
