@@ -73,7 +73,7 @@ stages:
       - task: MSBuild@1
         displayName: Build project SeleniumUiTest
         inputs:
-          solution: SeleniumUITests/SeleniumUiTests.csproj
+          solution: UITestingProject/UITestingProject.csproj
           msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1
