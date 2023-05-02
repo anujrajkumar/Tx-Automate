@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTestingProject",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITestingProject", "UITestingProject\UITestingProject.csproj", "{863111AD-372C-47BA-9332-B0A2E2729FF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumUiTests", "SeleniumUiTests\SeleniumUiTests.csproj", "{655A2079-A99C-4539-99CC-FD772A0B10BA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
