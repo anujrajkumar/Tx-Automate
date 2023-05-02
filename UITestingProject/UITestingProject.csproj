@@ -14,7 +14,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-    <ItemGroup>
+  <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="UITest.cs" />
   </ItemGroup>
