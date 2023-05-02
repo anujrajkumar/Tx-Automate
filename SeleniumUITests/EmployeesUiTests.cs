@@ -2,7 +2,9 @@
 using System;
 using System.Drawing.Imaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using System.Collections.Generic;
+using System.Text;
+using Xunit;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
@@ -10,71 +12,60 @@ using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.PhantomJS;
 
-namespace SeleniumUiTests
+namespace UITestingProject
 {
-    [TestClass]
-    public class EmployeesUiTests
+    public class UITest: IDisposable
     {
-        private string _websiteURL = "https://terraform-demoapp-service.azurewebsites.net/";
-        private RemoteWebDriver _browserDriver;
-        public TestContext TestContext { get; set; }
-
-        [TestInitialize()]
-        public void PU_SearchTests_Initialize()
+        private readonly IWebDriver driver;
+        public UITest()
         {
-           _websiteURL = (string) TestContext.Properties["webAppUrl"];
+            driver = new ChromeDriver();
+        }
+        public void Dispose()
+        {
+            driver.Quit();
+            driver.Dispose();
         }
 
-        [TestMethod]
-        [TestCategory("Selenium")]
-        [DataRow("Adam John", "Marketing", "adam.john@email.com", "2423282992", "74 Avenue Tunis")]
-        [DataRow("Myriam Doe", "Sales", "myriam.doe@email.com", "2487678679", "89 Avenue Beja")]
-        [DataRow("Sam Yasser", "Engineering", "sam.yasser@email.com", "9627656254", "9 Rue Tabarka")]
-        public void CreateEmployee(string fullname, string department, string email, string phone, string address)
+        [Fact]
+        public void Create_GET_ReturnsCreateView()
         {
-            // Arrange
-            _browserDriver = new ChromeDriver();
-            _browserDriver.Manage().Window.Maximize();
-            _browserDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(20));
-            _browserDriver.Navigate().GoToUrl("https://terraform-demoapp-service.azurewebsites.net/Employees/Create");
-            _browserDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(20));
+            driver.Navigate().GoToUrl("http://54.236.246.7/Register/Create");
 
-            _browserDriver.FindElementById("Fullname").Clear();
-            _browserDriver.FindElementById("Fullname").SendKeys(fullname);
-
-            _browserDriver.FindElementById("Department").Clear();
-            _browserDriver.FindElementById("Department").SendKeys(department);
-
-            _browserDriver.FindElementById("Email").Clear();
-            _browserDriver.FindElementById("Email").SendKeys(email);
-
-            _browserDriver.FindElementById("Phone").Clear();
-            _browserDriver.FindElementById("Phone").SendKeys(phone);
-
-            _browserDriver.FindElementById("Address").Clear();
-            _browserDriver.FindElementById("Address").SendKeys(address);
-
-            var screenshot = _browserDriver.GetScreenshot();
-            var fileName = $"{fullname}.jpg";
-            screenshot.SaveAsFile(fileName, ImageFormat.Jpeg);
-            TestContext.AddResultFile(fileName);
-            
-            // Act
-            _browserDriver.FindElement(By.CssSelector("input.btn.btn-default")).Click();
-
-            // Assert
-            Assert.IsTrue(_browserDriver.PageSource.Contains(fullname));
-            Assert.IsTrue(_browserDriver.PageSource.Contains(department));
-            Assert.IsTrue(_browserDriver.PageSource.Contains(email));
-            Assert.IsTrue(_browserDriver.PageSource.Contains(phone));
-            Assert.IsTrue(_browserDriver.PageSource.Contains(address));
+            Assert.Equal("Create Record - MyAppT", driver.Title);
+            Assert.Contains("Create Record", driver.PageSource);
         }
 
-        [TestCleanup()]
-        public void PU_SearchTests_Cleanup()
+        [Fact]
+        public void Create_POST_InvalidModel()
         {
-            _browserDriver.Quit();
+            driver.Navigate().GoToUrl("http://54.236.246.7/Register/Create");
+
+            driver.FindElement(By.Id("Name")).SendKeys("Test");
+
+            driver.FindElement(By.Id("Age")).SendKeys("30");
+
+            driver.FindElement(By.ClassName("btn-primary")).Click();
+
+            var errorMessage = driver.FindElement(By.CssSelector(".validation-summary-errors > ul > li")).Text;
+
+            Assert.Equal("The field Age must be between 40 and 60.", errorMessage);
         }
 
+        [Fact]
+        public void Create_POST_ValidModel()
+        {
+            driver.Navigate().GoToUrl("http://54.236.246.7/Register/Create");
+
+            driver.FindElement(By.Id("Name")).SendKeys("Test");
+
+            driver.FindElement(By.Id("Age")).SendKeys("40");
+
+            driver.FindElement(By.ClassName("btn-primary")).Click();
+
+            Assert.Equal("Records - MyAppT", driver.Title);
+            Assert.Contains("Test", driver.PageSource);
+            Assert.Contains("40", driver.PageSource);
+        }
     }
 }
