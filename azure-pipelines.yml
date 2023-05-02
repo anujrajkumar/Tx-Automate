@@ -114,14 +114,14 @@ stages:
         continueOnError: true  
 
 
-      - task: reportgenerator@5
-        inputs:
-          reports: 'TestResults\Coverage\coverage.cobertura.xml'
-          targetdir: 'coveragereport'
+      # - task: reportgenerator@5
+      #   inputs:
+      #     reports: 'TestResults\Coverage\coverage.cobertura.xml'
+      #     targetdir: 'coveragereport'
       - task: PublishCodeCoverageResults@1
         inputs:
           codeCoverageTool: 'Cobertura'
-          summaryFileLocation: 'TestResults\Coverage\coverage.cobertura.xml'
+          summaryFileLocation: 'TestResults/Coverage/coverage.cobertura.xml'
 
 ##########################################################################################################################
 
