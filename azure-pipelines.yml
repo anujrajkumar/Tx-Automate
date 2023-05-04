@@ -87,17 +87,6 @@ stages:
   jobs:
     - job: Unit_Test
       steps:
-      # - task: DotNetCoreCLI@2
-      #   displayName: Restore
-      #   inputs:
-      #     command: 'restore'
-      #     projects: '**/MyAppT.csproj'
-      # - task: NuGetToolInstaller@0
-      #   displayName: Use NuGet    
-      # - task: NuGetCommand@2
-      #   displayName: NuGet restore
-      #   inputs:
-      #     restoreSolution: MyAppT.sln
       - task: UseDotNet@2
         displayName: 'Install .NET Core SDK'
         inputs:
@@ -114,10 +103,6 @@ stages:
         continueOnError: true  
 
 
-      # - task: reportgenerator@5
-      #   inputs:
-      #     reports: 'TestResults\Coverage\coverage.cobertura.xml'
-      #     targetdir: 'coveragereport'
       - task: PublishCodeCoverageResults@1
         inputs:
           codeCoverageTool: 'Cobertura'
