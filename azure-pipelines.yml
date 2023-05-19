@@ -80,7 +80,30 @@ stages:
         displayName: 'Publish Artifact: UI-Test'
         inputs:
           ArtifactName: ui-tests
+          
+########################################################################################################################################
 
+- stage: Docker_Image_Scan
+  displayName: Docker image scanning
+  jobs:
+    - job: Image_Scanning
+      steps:
+      - task: DockerInstaller@0
+        inputs:
+          dockerVersion: '17.09.0-ce'
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            docker pull bitnami/trivy
+            docker run -it trivy_scan bitnami/trivy:latest
+            docker pull anuj730/jpipeline_demo:DotNetDemo-$(Build.BuildId)
+            trivy image anuj730/jpipeline_demo:DotNetDemo-$(Build.BuildId)
+
+      # - task: Docker@2
+      #   inputs:
+      #     containerRegistry: 'DockerDotNetDemo'
+      #     command: 'login'
 ############################################################################################
 - stage: Unit_Test
   displayName: Running Unit Test
