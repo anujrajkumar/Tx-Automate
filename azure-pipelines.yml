@@ -97,10 +97,12 @@ stages:
           script: |
             docker pull bitnami/trivy
             docker pull anuj730/jpipeline_demo:DotNetDemo-$(Build.BuildId)
-            docker run --rm --name trivy bitnami/trivy:latest image anuj730/jpipeline_demo:DotNetDemo-$(Build.BuildId) --format json > trivy_report.json
-            ls
+            docker run --rm --name trivy bitnami/trivy:latest image anuj730/jpipeline_demo:DotNetDemo-$(Build.BuildId) --format json > - task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/trivy_report.json'
+    ArtifactName: 'image_scan_report'
+    publishLocation: 'Container'
       
-
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
