@@ -96,9 +96,9 @@ stages:
           targetType: 'inline'
           script: |
             docker pull bitnami/trivy
-            docker run -it trivy_scan bitnami/trivy:latest
+            docker run -it trivy-scan bitnami/trivy:latest
             docker pull anuj730/jpipeline_demo:DotNetDemo-$(Build.BuildId)
-            trivy image anuj730/jpipeline_demo:DotNetDemo-$(Build.BuildId)
+            docker run -t trivy-scan trivy image anuj730/jpipeline_demo:DotNetDemo-$(Build.BuildId)
 
       # - task: Docker@2
       #   inputs:
