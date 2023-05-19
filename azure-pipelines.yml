@@ -97,13 +97,19 @@ stages:
           script: |
             docker pull bitnami/trivy
             docker run -it trivy-scan bitnami/trivy:latest
+
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'DockerDotNetDemo'
+          command: 'login'
+      
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
             docker pull anuj730/jpipeline_demo:DotNetDemo-$(Build.BuildId)
             docker run -t trivy-scan trivy image anuj730/jpipeline_demo:DotNetDemo-$(Build.BuildId)
 
-      # - task: Docker@2
-      #   inputs:
-      #     containerRegistry: 'DockerDotNetDemo'
-      #     command: 'login'
 ############################################################################################
 - stage: Unit_Test
   displayName: Running Unit Test
