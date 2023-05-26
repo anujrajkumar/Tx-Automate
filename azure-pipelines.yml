@@ -150,7 +150,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            failed_tests=`cat Test\ Results/testresults.trx|grep failed`
+            failed_tests=`cat "Test Results"/testresults.trx|grep failed`
             echo $failed_tests
             echo "hello"
             if [[ -n $failed_tests ]]; then
