@@ -151,8 +151,8 @@ stages:
           targetType: 'inline'
           script: |
             ls *
-            cat TestResult/testresults.trx
-            failed_tests=`cat TestResults/testresults.trx|grep failed`
+            cat TestResult/testresults.trx|grep failed
+            failed_tests=cat TestResults/testresults.trx|grep failed
             echo $failed_tests
             echo "hello"
             if [[ -n $failed_tests ]]; then
