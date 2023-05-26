@@ -140,7 +140,7 @@ stages:
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'Test Result'
+          ArtifactName: 'TestResult'
           publishLocation: 'Container'
       
       - task: PublishCodeCoverageResults@1
@@ -159,20 +159,19 @@ stages:
         inputs:
           buildType: 'current'
           downloadType: 'single'
-          artifactName: 'Test Result'
+          artifactName: 'TestResult'
           itemPattern: '**/*.trx'
           downloadPath: '$(Agent.TempDirectory)'
       - task: Bash@3
         inputs:
           targetType: 'inline'
           script: |
-            failed_tests=$(find . -name "**/testresults.trx" -type f | xargs cat | grep -E "outcome=\"Failed\"")
-            echo "$failed_tests"
+            failed_tests=`cat TestResult/testresults.trx|grep failed`
             if [[ -n $failed_tests ]]; then
-              echo "Quality gate failed. There are failed tests."
-              exit 1
+            echo "Quality gate failed. There are failed tests."
+            exit 1
             else
-              echo "Quality gate passed. All tests passed."
+            echo "Quality gate passed. All tests passed."
             fi
           workingDirectory: '$(Agent.TempDirectory)'
        
