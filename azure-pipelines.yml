@@ -110,10 +110,20 @@ stages:
           command: 'test'
           projects: 'TestingProject/TestingProject.csproj'
           publishTestResults: true
-          arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
+          arguments: '--configuration $(BuildConfiguration) --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
         continueOnError: true  
 
-
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(Agent.TempDirectory)'
+          Contents: 'testresults.trx'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'Test Result'
+          publishLocation: 'Container'
     # - task: reportgenerator@5
     #   inputs:
     #     reports: 'TestResults\Coverage\coverage.cobertura.xml'
@@ -123,6 +133,31 @@ stages:
           codeCoverageTool: 'Cobertura'
           summaryFileLocation: 'TestResults\Coverage\coverage.cobertura.xml'
 
+- stage: Quality_Gate
+  displayName: "Evaluate Test Results"
+  jobs:
+    - job: Quality_Gate
+      steps:
+      - task: DownloadBuildArtifacts@1
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'Test Result'
+          itemPattern: '**/*.trx'
+          downloadPath: '$(Agent.TempDirectory)'
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            failed_tests=$(find . -name "**/testresults.trx" -type f | xargs cat | grep -E "outcome=\"Failed\"")
+            
+            if [[ -n $failed_tests ]]; then
+              echo "Quality gate failed. There are failed tests."
+              exit 1
+            else
+              echo "Quality gate passed. All tests passed."
+            fi
+          workingDirectory: '$(Agent.TempDirectory)'
 ##########################################################################################################################
 
 # - stage: Infra
