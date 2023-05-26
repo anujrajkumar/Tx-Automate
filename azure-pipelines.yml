@@ -139,6 +139,27 @@ stages:
 
 ##########################################################################################################################
 
+- stage: Quality_Gate
+  displayName: "Evaluate Test Results"
+  jobs:
+    - job: Quality_Gate
+      steps:
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            $failedTests = (Get-Content -Path '$(System.DefaultWorkingDirectory)\**\testresults.trx') | Select-String -Pattern 'outcome="Failed"'
+            
+                    if ($failedTests) {
+                      Write-Host "Quality gate failed. There are failed tests."
+                      exit 1
+                    }
+                    else {
+                      Write-Host "Quality gate passed. All tests passed."
+                    }
+
+####################################################################################################################################################################
+
 # - stage: Infra
 #   # condition: succeeded()
 #   jobs:
