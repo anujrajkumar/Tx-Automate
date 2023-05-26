@@ -145,12 +145,13 @@ stages:
           artifactName: 'Test Result'
           itemPattern: '**/*.trx'
           downloadPath: '$(Agent.TempDirectory)'
+
       - task: Bash@3
         inputs:
           targetType: 'inline'
           script: |
             failed_tests=$(find . -name "**/testresults.trx" -type f | xargs cat | grep -E "outcome=\"Failed\"")
-            
+             echo "failed tests"
             if [[ -n $failed_tests ]]; then
               echo "Quality gate failed. There are failed tests."
               exit 1
