@@ -130,8 +130,18 @@ stages:
           publishTestResults: true
           arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
         continueOnError: true  
-
-
+      
+      - task: CopyFiles@2
+        inputs:
+          Contents: '**/*.trx'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'Test Result'
+          publishLocation: 'Container'
+      
       - task: PublishCodeCoverageResults@1
         inputs:
           codeCoverageTool: 'Cobertura'
@@ -144,11 +154,18 @@ stages:
   jobs:
     - job: Quality_Gate
       steps:
+      - task: DownloadBuildArtifacts@1
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'Test Result'
+          itemPattern: '**/*.trx'
+          downloadPath: '$(System.ArtifactsDirectory)'
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
           script: |
-            $failedTests = (Get-Content -Path '$(System.DefaultWorkingDirectory)\**\*.trx') | Select-String -Pattern 'outcome="Failed"'
+            $failedTests = (Get-Content -Path '$(System.ArtifactsDirectory)\**\*.trx') | Select-String -Pattern 'outcome="Failed"'
             
                     if ($failedTests) {
                       Write-Host "Quality gate failed. There are failed tests."
