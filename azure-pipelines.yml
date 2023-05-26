@@ -128,7 +128,7 @@ stages:
           command: 'test'
           projects: 'TestingProject/TestingProject.csproj'
           publishTestResults: true
-          arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
+          arguments: '--configuration $(BuildConfiguration) --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\ '
         continueOnError: true  
       
       - task: CopyFiles@2
