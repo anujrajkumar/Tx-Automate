@@ -155,27 +155,27 @@ stages:
   jobs:
     - job: Quality_Gate
       steps:
-      # - task: DownloadBuildArtifacts@1
-      #   inputs:
-      #     buildType: 'current'
-      #     downloadType: 'single'
-      #     artifactName: 'Test Result'
-      #     itemPattern: '**/*.trx'
-      #     downloadPath: '$(System.ArtifactsDirectory)'
-      - task: PowerShell@2
+      - task: DownloadBuildArtifacts@1
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'Test Result'
+          itemPattern: '**/*.trx'
+          downloadPath: '$(System.ArtifactsDirectory)'
+      - task: Bash@3
         inputs:
           targetType: 'inline'
           script: |
-            $failedTests = (Get-Content -Path '$(Agent.TempDirectory)/**/testresults.trx') | Select-String -Pattern 'outcome="Failed"'
+            failed_tests=$(find . -name testresults.trx -type f | xargs cat | grep -E "outcome=\"Failed\"")
             
-                    if ($failedTests) {
-                      Write-Host "Quality gate failed. There are failed tests."
-                      exit 1
-                    }
-                    else {
-                      Write-Host "Quality gate passed. All tests passed."
-                    }
-
+            if [[ -n $failed_tests ]]; then
+              echo "Quality gate failed. There are failed tests."
+              exit 1
+            else
+              echo "Quality gate passed. All tests passed."
+            fi
+          workingDirectory: '$(System.ArtifactsDirectory)'
+       
 ####################################################################################################################################################################
 
 # - stage: Infra
