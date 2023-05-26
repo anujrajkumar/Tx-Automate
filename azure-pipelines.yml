@@ -161,7 +161,7 @@ stages:
           downloadType: 'single'
           artifactName: 'Test Result'
           itemPattern: '**/*.trx'
-          downloadPath: '$(System.ArtifactsDirectory)'
+          downloadPath: '$(Agent.TempDirectory)'
       - task: Bash@3
         inputs:
           targetType: 'inline'
@@ -174,7 +174,7 @@ stages:
             else
               echo "Quality gate passed. All tests passed."
             fi
-          workingDirectory: '$(System.ArtifactsDirectory)'
+          workingDirectory: '$(Agent.TempDirectory)'
        
 ####################################################################################################################################################################
 
