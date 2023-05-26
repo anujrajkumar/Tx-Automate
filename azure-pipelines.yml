@@ -149,9 +149,11 @@ stages:
       - task: Bash@3
         inputs:
           targetType: 'inline'
-          script: |
-            failed_tests=`find . -name "Test Result/testresults.trx" -type f | xargs cat | grep -E "outcome=\"Failed\""`
+          script:
+            #failed_tests=`find . -name "Test Result/testresults.trx" -type f | xargs cat | grep -E "outcome=\"Failed\""`
+            failed_tests=`cat Test\ Results/testresults.trx|grep failed`
             echo $failed_tests
+            echo "hello"
             if [[ -n $failed_tests ]]; then
               echo "Quality gate failed. There are failed tests."
               exit 1
