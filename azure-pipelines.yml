@@ -133,6 +133,7 @@ stages:
       
       - task: CopyFiles@2
         inputs:
+          SourceFolder: '$(Agent.TempDirectory)'
           Contents: 'testresults.trx'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
       
