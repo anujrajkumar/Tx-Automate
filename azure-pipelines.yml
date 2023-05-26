@@ -122,7 +122,7 @@ stages:
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'Test Result'
+          ArtifactName: 'TestResult'
           publishLocation: 'Container'
     # - task: reportgenerator@5
     #   inputs:
@@ -142,7 +142,7 @@ stages:
         inputs:
           buildType: 'current'
           downloadType: 'single'
-          artifactName: 'Test Result'
+          artifactName: 'TestResult'
           itemPattern: '**/*.trx'
           downloadPath: '$(Agent.TempDirectory)'
 
@@ -150,7 +150,8 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            failed_tests=`cat "Test Results"/testresults.trx|grep failed`
+            ls
+            failed_tests=`cat TestResults/testresults.trx|grep failed`
             echo $failed_tests
             echo "hello"
             if [[ -n $failed_tests ]]; then
