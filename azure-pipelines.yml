@@ -166,7 +166,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            failed_tests=$(find . -name testresults.trx -type f | xargs cat | grep -E "outcome=\"Failed\"")
+            failed_tests=$(find . -name "**/testresults.trx" -type f | xargs cat | grep -E "outcome=\"Failed\"")
             
             if [[ -n $failed_tests ]]; then
               echo "Quality gate failed. There are failed tests."
