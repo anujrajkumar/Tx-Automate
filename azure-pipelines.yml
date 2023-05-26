@@ -155,13 +155,13 @@ stages:
   jobs:
     - job: Quality_Gate
       steps:
-      - task: DownloadBuildArtifacts@1
-        inputs:
-          buildType: 'current'
-          downloadType: 'single'
-          artifactName: 'Test Result'
-          itemPattern: '**/*.trx'
-          downloadPath: '$(System.ArtifactsDirectory)'
+      # - task: DownloadBuildArtifacts@1
+      #   inputs:
+      #     buildType: 'current'
+      #     downloadType: 'single'
+      #     artifactName: 'Test Result'
+      #     itemPattern: '**/*.trx'
+      #     downloadPath: '$(System.ArtifactsDirectory)'
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
