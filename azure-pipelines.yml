@@ -133,7 +133,7 @@ stages:
       
       - task: CopyFiles@2
         inputs:
-          Contents: '**/*.trx'
+          Contents: 'testresults.trx'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
       
       - task: PublishBuildArtifacts@1
@@ -165,7 +165,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            $failedTests = (Get-Content -Path '$(System.ArtifactsDirectory)\**\*.trx') | Select-String -Pattern 'outcome="Failed"'
+            $failedTests = (Get-Content -Path '$(System.ArtifactsDirectory)/testresults.trx') | Select-String -Pattern 'outcome="Failed"'
             
                     if ($failedTests) {
                       Write-Host "Quality gate failed. There are failed tests."
