@@ -150,9 +150,6 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            ls
-            cat "Test Result/testresults.trx"
-            find . -name "Test Result/testresults.trx" -type f | xargs cat | grep -E "outcome=\"Error\""
             failed_tests=$(find . -name "**/testresults.trx" -type f | xargs cat | grep -E "Result=\"Failed\"")
             echo "$failed_tests"
             if [[ -n $failed_tests ]]; then
