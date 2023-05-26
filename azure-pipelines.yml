@@ -148,7 +148,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            $failedTests = (Get-Content -Path '$(System.DefaultWorkingDirectory)\**\testresults.trx') | Select-String -Pattern 'outcome="Failed"'
+            $failedTests = (Get-Content -Path '$(System.DefaultWorkingDirectory)\**\*.trx') | Select-String -Pattern 'outcome="Failed"'
             
                     if ($failedTests) {
                       Write-Host "Quality gate failed. There are failed tests."
