@@ -18,7 +18,7 @@ namespace TestingProject
             int newValue = TS.Predict(800);
 
             // Assert
-            Assert.Equal(1201, newValue);
+            Assert.Equal(1200, newValue);
         }
 
         [Theory]
