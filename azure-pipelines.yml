@@ -151,7 +151,6 @@ stages:
           targetType: 'inline'
           script: |
             ls *
-            cat `find . -name testresults.trx -type f | xargs cat | grep -E "outcome=\"Failed\""`
             failed_tests=`find . -name testresults.trx -type f | xargs cat | grep -E "outcome=\"Failed\""`
             echo $failed_tests
             echo "hello"
