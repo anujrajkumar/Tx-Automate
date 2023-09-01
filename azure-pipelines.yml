@@ -5,7 +5,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
 trigger:
-- none
+- docker
 
 pool:
   vmImage: 'ubuntu-latest'
