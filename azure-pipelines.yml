@@ -85,7 +85,6 @@ stages:
 
 - stage: Docker_Image_Scan
   displayName: Docker image scanning
-  dependsOn: Static_Code_Analysis
   jobs:
     - job: Image_Scanning
       steps:
