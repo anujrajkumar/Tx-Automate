@@ -39,7 +39,10 @@ pipeline:
                   identifier: Run_3
                   spec:
                     shell: Powershell
-                    command: dotnet test ~TestingProject/TestingProject.csproj
+                    command: |-
+                      pwd
+                      cd .\TestingProject\
+                      dotnet test
           platform:
             os: Windows
             arch: Amd64
