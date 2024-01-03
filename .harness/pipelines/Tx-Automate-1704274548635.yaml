@@ -19,15 +19,34 @@ pipeline:
             steps:
               - step:
                   identifier: echo
-                  name: echo
+                  name: Build
                   spec:
-                    command: echo hello world
+                    shell: Powershell
+                    command: dotnet restore
                   timeout: ""
                   type: Run
+                  description: Build the Project
+              - step:
+                  type: Run
+                  name: Run_2
+                  identifier: Run_2
+                  spec:
+                    shell: Powershell
+                    command: dotnet build
+              - step:
+                  type: Run
+                  name: Run_3
+                  identifier: Run_3
+                  spec:
+                    shell: Powershell
+                    command: dotnet test
           platform:
+            os: Windows
             arch: Amd64
-            os: Linux
           runtime:
+            type: Docker
             spec: {}
-            type: Cloud
         type: CI
+        delegateSelectors:
+          - windows-amd64
+          - docker-delegate
