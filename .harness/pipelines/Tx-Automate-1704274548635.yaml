@@ -19,7 +19,7 @@ pipeline:
             steps:
               - step:
                   identifier: echo
-                  name: Build
+                  name: Restore
                   spec:
                     shell: Powershell
                     command: dotnet restore
@@ -28,18 +28,18 @@ pipeline:
                   description: Build the Project
               - step:
                   type: Run
-                  name: Run_2
+                  name: Build
                   identifier: Run_2
                   spec:
                     shell: Powershell
                     command: dotnet build
               - step:
                   type: Run
-                  name: Run_3
+                  name: Test
                   identifier: Run_3
                   spec:
                     shell: Powershell
-                    command: dotnet test
+                    command: dotnet test ~TestingProject/TestingProject.csproj
           platform:
             os: Windows
             arch: Amd64
