@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_anujrajkumar_Tx_Automate_1704274618869-pr-trigger-input-set
+  identifier: Build_anujrajkumar_Tx_Automate_1704274618869prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: DotNetPipeline
+  pipeline:
+    identifier: Build_anujrajkumar_Tx_Automate_1704274618869
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
