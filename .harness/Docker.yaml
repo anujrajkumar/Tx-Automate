@@ -35,4 +35,4 @@ pipeline:
                     repo: anuj730/harness-repo
                     tags:
                       - latest
-                    dockerfile: MyAppT/Dockerfile
+                    dockerfile: ./MyAppT/Dockerfile
