@@ -61,18 +61,16 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: ShellScript
-                  name: ShellScript_1
-                  identifier: ShellScript_1
+                  type: K8sApply
+                  name: K8sApply_1
+                  identifier: K8sApply_1
                   spec:
-                    shell: Bash
-                    executionTarget: {}
-                    source:
-                      type: Inline
-                      spec:
-                        script: kubectl apply -f deployment,yaml
-                    environmentVariables: []
-                    outputVariables: []
+                    skipDryRun: false
+                    skipSteadyStateCheck: false
+                    skipRendering: false
+                    overrides: []
+                    filePaths:
+                      - ./deployment.yaml
                   timeout: 10m
             rollbackSteps:
               - step:
