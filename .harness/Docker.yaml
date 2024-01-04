@@ -19,7 +19,7 @@ pipeline:
         spec:
           cloneCodebase: true
           platform:
-            os: Windows
+            os: Linux
             arch: Amd64
           runtime:
             type: Cloud
@@ -27,12 +27,11 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: BuildAndPushDockerRegistry
-                  name: BuildAndPushDockerRegistry
-                  identifier: BuildAndPushDockerRegistry
+                  type: Run
+                  name: docker build
+                  identifier: docker_build
                   spec:
-                    connectorRef: account.harnessImage
-                    repo: anuj730/harness-repo
-                    tags:
-                      - latest
-                    dockerfile: ./MyAppT/Dockerfile
+                    shell: Sh
+                    command: |-
+                      cd MyAppT
+                      docker build -t test .
