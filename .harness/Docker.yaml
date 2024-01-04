@@ -27,11 +27,12 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: Run
-                  name: docker build
-                  identifier: docker_build
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry
+                  identifier: BuildAndPushDockerRegistry
                   spec:
-                    shell: Sh
-                    command: |-
-                      cd MyAppT
-                      docker build -t test .
+                    connectorRef: account.harnessImage
+                    repo: anuj730/harness-repo
+                    tags:
+                      - latest
+                    dockerfile: ./MyAppT/Dockerfile
