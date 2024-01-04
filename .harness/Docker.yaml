@@ -1,0 +1,38 @@
+pipeline:
+  name: Docker
+  identifier: Docker
+  projectIdentifier: DotNetPipeline
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.Github_OAuth_1704192628541
+        repoName: anujrajkumar/Tx-Automate
+        build: <+input>
+  stages:
+    - stage:
+        name: Docker_Build
+        identifier: Docker_Build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Windows
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry
+                  identifier: BuildAndPushDockerRegistry
+                  spec:
+                    connectorRef: account.harnessImage
+                    repo: anuj730/harness-repo
+                    tags:
+                      - latest
+                    dockerfile: MyAppT/Dockerfile
