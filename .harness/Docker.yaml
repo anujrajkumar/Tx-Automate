@@ -57,7 +57,7 @@ pipeline:
             environmentRef: k8s
             deployToAll: false
             infrastructureDefinitions:
-              - identifier: deploy_k8s
+              - identifier: deploy
           execution:
             steps:
               - step:
