@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: dotnetcore
-        image: anuj730/harness-repo:latest
+        image: anuj730/harness-repo
         ports:
         - containerPort: 80
 
