@@ -50,3 +50,4 @@ pipeline:
         delegateSelectors:
           - windows-amd64
           - docker-delegate
+        description: ""
