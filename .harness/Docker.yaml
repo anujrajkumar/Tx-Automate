@@ -34,7 +34,7 @@ pipeline:
                     connectorRef: account.harnessImage
                     repo: anuj730/harness-repo
                     tags:
-                      - latest
+                      - <+pipeline.executionId>
                     dockerfile: ./MyAppT/Dockerfile
     - stage:
         name: Manual
