@@ -31,7 +31,7 @@ pipeline:
                   name: Sonarqube
                   identifier: Sonarqube
                   spec:
-                    mode: extraction
+                    mode: orchestration
                     config: default
                     target:
                       type: repository
@@ -42,7 +42,7 @@ pipeline:
                         level: info
                     auth:
                       access_token: squ_fb4843ccf819d97d3ef4173944a5c5890f4225a6698fd
-                      domain: http://192.168.56.1:9000
+                      domain: http://192.168.14.213:9000/
                       ssl: false
                     tool:
                       project_key: Harness-demo
