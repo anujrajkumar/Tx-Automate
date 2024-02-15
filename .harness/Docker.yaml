@@ -35,6 +35,8 @@ pipeline:
                     config: default
                     target:
                       type: repository
+                      name: Harness-demo
+                      variant: docker
                     advanced:
                       log:
                         level: info
@@ -42,8 +44,6 @@ pipeline:
                       access_token: sqa_70e9c3578642aac7f6683f33dcfcc153a8e30105
                       domain: http://192.168.56.1:9000/
                       ssl: false
-                    tool:
-                      project_key: Harness-demo
               - step:
                   type: BuildAndPushDockerRegistry
                   name: BuildAndPushDockerRegistry
