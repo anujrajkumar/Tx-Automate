@@ -22,7 +22,7 @@ pipeline:
             os: Linux
             arch: Amd64
           runtime:
-            type: Docker
+            type: Cloud
             spec: {}
           execution:
             steps:
@@ -41,11 +41,11 @@ pipeline:
                       log:
                         level: info
                     auth:
-                      access_token: squ_fb4843ccf819d97d3ef4173944a5c5890f4225a6698fd
-                      domain: http://192.168.14.213:9000
+                      access_token: sqp_f6a859559da12a2acedd149d54853de147f6a1d0
+                      domain: http://13.53.135.172:9000/
                       ssl: false
                     tool:
-                      project_key: Harness-demo
+                      project_key: harness-demo
               - step:
                   type: BuildAndPushDockerRegistry
                   name: BuildAndPushDockerRegistry
