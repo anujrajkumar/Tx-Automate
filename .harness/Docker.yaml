@@ -47,6 +47,20 @@ pipeline:
                     tool:
                       project_key: harness-demo
               - step:
+                  type: Run
+                  name: Sonar Show Results
+                  identifier: Sonar_Results
+                  spec:
+                    connectorRef: account.DockerHubDiego
+                    image: maven:3.6.3-jdk-8
+                    command: ls sonarResults.xml
+                    privileged: false
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths:
+                          - sonarResults.xml
+              - step:
                   type: BuildAndPushDockerRegistry
                   name: BuildAndPushDockerRegistry
                   identifier: BuildAndPushDockerRegistry
