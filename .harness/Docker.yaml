@@ -51,8 +51,9 @@ pipeline:
                   name: Sonar Show Results
                   identifier: Sonar_Results
                   spec:
-                    connectorRef: account.DockerHubDiego
+                    connectorRef: account.harnessImage
                     image: maven:3.6.3-jdk-8
+                    shell: Sh
                     command: ls sonarResults.xml
                     privileged: false
                     reports:
