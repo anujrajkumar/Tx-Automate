@@ -41,7 +41,7 @@ pipeline:
                       log:
                         level: info
                     auth:
-                      access_token: " sqp_a26e710a4038540217d394557d236fdf635698fd"
+                      access_token: squ_fb4843ccf819d97d3ef4173944a5c5890f4225a6698fd
                       domain: http://192.168.56.1:9000/
                       ssl: false
               - step:
