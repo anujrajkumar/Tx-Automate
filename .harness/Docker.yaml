@@ -43,7 +43,7 @@ pipeline:
                     auth:
                       access_token: " sqp_f1a0e2eee0f7d956f3713c9f4867c789e7e218d9"
                       domain: http://192.168.56.1:9000/
-                      ssl: true
+                      ssl: false
               - step:
                   type: BuildAndPushDockerRegistry
                   name: BuildAndPushDockerRegistry
