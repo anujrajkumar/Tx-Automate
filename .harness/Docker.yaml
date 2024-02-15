@@ -35,15 +35,15 @@ pipeline:
                     config: default
                     target:
                       type: repository
-                      name: anujrajkumar/Tx-Automate
-                      variant: docker
                     advanced:
                       log:
                         level: info
                     auth:
-                      access_token: " sqp_f1a0e2eee0f7d956f3713c9f4867c789e7e218d9"
+                      access_token: sqa_70e9c3578642aac7f6683f33dcfcc153a8e30105
                       domain: http://192.168.56.1:9000/
                       ssl: false
+                    tool:
+                      project_key: Harness-demo
               - step:
                   type: BuildAndPushDockerRegistry
                   name: BuildAndPushDockerRegistry
