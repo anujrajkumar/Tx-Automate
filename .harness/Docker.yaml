@@ -35,13 +35,13 @@ pipeline:
                     config: default
                     target:
                       type: repository
-                      name: Harness-demo
+                      name: anujrajkumar/Tx-Automate
                       variant: docker
                     advanced:
                       log:
                         level: info
                     auth:
-                      access_token: sqa_70e9c3578642aac7f6683f33dcfcc153a8e30105
+                      access_token: " sqp_a26e710a4038540217d394557d236fdf635698fd"
                       domain: http://192.168.56.1:9000/
                       ssl: false
               - step:
