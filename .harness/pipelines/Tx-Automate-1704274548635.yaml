@@ -6,9 +6,10 @@ pipeline:
   properties:
     ci:
       codebase:
-        build: <+input>
         connectorRef: account.Github_OAuth_1704192628541
         repoName: anujrajkumar/Tx-Automate
+        build: <+input>
+        prCloneStrategy: SourceBranch
   stages:
     - stage:
         identifier: build
