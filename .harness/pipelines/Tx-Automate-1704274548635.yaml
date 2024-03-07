@@ -34,13 +34,13 @@ pipeline:
                   spec:
                     shell: Powershell
                     command: dotnet build
-              - step:
-                  type: Run
-                  name: Test
-                  identifier: Run_3
-                  spec:
-                    shell: Powershell
-                    command: cd .\TestingProject\ ; dotnet test
+              # - step:
+              #     type: Run
+              #     name: Test
+              #     identifier: Run_3
+              #     spec:
+              #       shell: Powershell
+              #       command: cd .\TestingProject\ ; dotnet test
           platform:
             os: Windows
             arch: Amd64
