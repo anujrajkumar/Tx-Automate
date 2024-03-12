@@ -1,5 +1,5 @@
 pipeline:
-  name: Docker
+  name: Docker-Build
   identifier: Docker
   projectIdentifier: DotNetPipeline
   orgIdentifier: default
