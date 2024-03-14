@@ -24,7 +24,7 @@ pipeline:
                   identifier: Run_2
                   spec:
                     shell: Sh
-                    command: dotnet build
+                    command: dotnet build MyAppT/MyAppT.csproj
               - step:
                   type: Run
                   name: Test
@@ -38,7 +38,7 @@ pipeline:
                       sudo apt-get update
                       sudo apt-get install -y dotnet-sdk-5.0
                       dotnet --version
-                      dotnet test TestingProject/ --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=TestResults/Coverage/
+                      dotnet test TestingProject/TestingProject.csproj --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=TestResults/Coverage/
           platform:
             os: Linux
             arch: Amd64
