@@ -22,7 +22,7 @@ pipeline:
                   identifier: echo
                   name: Restore
                   spec:
-                    shell: Powershell
+                    shell: Sh
                     command: dotnet restore
                   timeout: ""
                   type: Run
@@ -32,17 +32,19 @@ pipeline:
                   name: Build
                   identifier: Run_2
                   spec:
-                    shell: Powershell
+                    shell: Sh
                     command: dotnet build
               - step:
                   type: Run
                   name: Test
                   identifier: Run_3
                   spec:
-                    shell: Powershell
-                    command: cd .\TestingProject\ ; dotnet test
+                    shell: Sh
+                    command: |-
+                      #cd .\TestingProject\ ; dotnet test
+                      dotnet test TestingProject/ --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=TestResults/Coverage/
           platform:
-            os: Windows
+            os: Linux
             arch: Amd64
           runtime:
             type: Cloud
