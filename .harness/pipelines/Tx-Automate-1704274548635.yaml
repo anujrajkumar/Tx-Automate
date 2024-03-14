@@ -19,15 +19,6 @@ pipeline:
           execution:
             steps:
               - step:
-                  identifier: echo
-                  name: Restore
-                  spec:
-                    shell: Sh
-                    command: dotnet restore
-                  timeout: ""
-                  type: Run
-                  description: Build the Project
-              - step:
                   type: Run
                   name: Build
                   identifier: Run_2
