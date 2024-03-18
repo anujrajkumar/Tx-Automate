@@ -49,7 +49,7 @@ pipeline:
                   identifier: ArtifactoryUpload_1
                   spec:
                     connectorRef: jfrog
-                    target: harness-artifact-dev
+                    target: harness-artifact-dev/
                     sourcePath: ./published_artifacts.zip
           platform:
             os: Linux
