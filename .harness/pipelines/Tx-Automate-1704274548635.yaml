@@ -24,7 +24,10 @@ pipeline:
                   identifier: Run_2
                   spec:
                     shell: Sh
-                    command: dotnet build MyAppT/MyAppT.csproj
+                    command: |-
+                      dotnet build MyAppT/MyAppT.csproj
+                      dotnet publish --configuration Release --output ./published
+                      zip -r published_artifacts.zip ./published
               - step:
                   type: Run
                   name: Test
@@ -39,6 +42,14 @@ pipeline:
                       sudo apt-get install -y dotnet-sdk-5.0
                       dotnet --version
                       dotnet test TestingProject/TestingProject.csproj --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=TestResults/Coverage/
+              - step:
+                  type: ArtifactoryUpload
+                  name: ArtifactoryUpload_1
+                  identifier: ArtifactoryUpload_1
+                  spec:
+                    connectorRef: jfrog
+                    target: harness-artifact-dev
+                    sourcePath: ./harness/published_artifacts.zip
           platform:
             os: Linux
             arch: Amd64
