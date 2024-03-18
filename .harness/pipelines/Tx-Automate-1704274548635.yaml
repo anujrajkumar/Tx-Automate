@@ -28,7 +28,7 @@ pipeline:
                       dotnet build MyAppT/MyAppT.csproj
                       dotnet publish --configuration Release --output ./published
                       zip -r published_artifacts.zip ./published
-                      ltr
+                      ls -ltr
               - step:
                   type: Run
                   name: Test
