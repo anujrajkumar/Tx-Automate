@@ -3,3 +3,18 @@ service:
   identifier: IIS
   orgIdentifier: default
   projectIdentifier: DotNetPipeline
+  serviceDefinition:
+    spec:
+      artifacts:
+        primary:
+          primaryArtifactRef: <+input>
+          sources:
+            - spec:
+                connectorRef: jfrog
+                artifactDirectory: /
+                artifactPath: published_artifacts.zip
+                repository: harness-artifact-dev
+                repositoryFormat: generic
+              identifier: IIS
+              type: ArtifactoryRegistry
+    type: WinRm
