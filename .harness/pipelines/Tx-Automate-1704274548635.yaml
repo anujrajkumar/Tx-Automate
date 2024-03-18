@@ -28,6 +28,7 @@ pipeline:
                       dotnet build MyAppT/MyAppT.csproj
                       dotnet publish --configuration Release --output ./published
                       zip -r published_artifacts.zip ./published
+                      ltr
               - step:
                   type: Run
                   name: Test
@@ -49,7 +50,7 @@ pipeline:
                   spec:
                     connectorRef: jfrog
                     target: harness-artifact-dev
-                    sourcePath: ./harness/published_artifacts.zip
+                    sourcePath: ./published_artifacts.zip
           platform:
             os: Linux
             arch: Amd64
