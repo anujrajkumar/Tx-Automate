@@ -13,7 +13,7 @@ pipeline:
         spec:
           deploymentType: WinRm
           service:
-            serviceRef: harness_winrm
+            serviceRef: IIS
             serviceInputs:
               serviceDefinition:
                 type: WinRm
@@ -23,10 +23,10 @@ pipeline:
                       primaryArtifactRef: <+input>
                       sources: <+input>
           environment:
-            environmentRef: harnessdevenv
+            environmentRef: test
             deployToAll: false
             infrastructureDefinitions:
-              - identifier: harness_remoteserver
+              - identifier: WinRm
           execution:
             steps:
               - stepGroup:
