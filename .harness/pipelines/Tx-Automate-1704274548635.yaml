@@ -48,7 +48,7 @@ pipeline:
                       sudo apt-get install -y dotnet-sdk-5.0
                       dotnet --version
                       dotnet test TestingProject/TestingProject.csproj --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=TestResults/Coverage/
-                      echo "<+stage.spec.execution.steps.Build.output.outputVariables.zipFileName>"
+                      echo "<+pipeline.stages.build.spec.execution.steps.Run_2.output.outputVariables.ZipFileName>"
               - step:
                   type: ArtifactoryUpload
                   name: ArtifactoryUpload_1
