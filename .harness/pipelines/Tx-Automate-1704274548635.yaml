@@ -32,6 +32,8 @@ pipeline:
                       find . -name '*.zip'
                       export ZipFileName=$(find . -name '*.zip')
                       echo "$ZipFileName"
+                    outputVariables:
+                      - name: ZipFileName
               - step:
                   type: Run
                   name: Test
