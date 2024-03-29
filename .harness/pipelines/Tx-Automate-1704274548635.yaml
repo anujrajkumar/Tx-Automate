@@ -29,6 +29,7 @@ pipeline:
                       dotnet publish --configuration Release --output ./published
                       zip -r published_artifacts.zip ./published
                       ls -ltr
+                      export ZipFileName=$(find . -name '*.zip')
               - step:
                   type: Run
                   name: Test
@@ -43,6 +44,7 @@ pipeline:
                       sudo apt-get install -y dotnet-sdk-5.0
                       dotnet --version
                       dotnet test TestingProject/TestingProject.csproj --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "Code coverage" /p:CoverletOutput=TestResults/Coverage/
+                      echo "ZipFileName"
               - step:
                   type: ArtifactoryUpload
                   name: ArtifactoryUpload_1
