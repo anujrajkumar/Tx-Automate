@@ -26,6 +26,7 @@ pipeline:
                     shell: Sh
                     command: |-
                       dotnet build MyAppT/MyAppT.csproj
+                      dotnet publish --configuration Release --output ./published
                       zip -r published_artifacts.zip ./published
                       ls -ltr
                       find . -name '*.zip'
