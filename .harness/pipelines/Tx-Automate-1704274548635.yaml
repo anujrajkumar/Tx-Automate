@@ -39,6 +39,8 @@ pipeline:
                       find . -name '*.zip'
                       export ZipFileName=$(find . -name '*.zip')
                       echo "$ZipFileName"
+                      nuget=$(find . -name '*.nupkg')
+                      echo "$nuget"
                     outputVariables:
                       - name: ZipFileName
               - step:
