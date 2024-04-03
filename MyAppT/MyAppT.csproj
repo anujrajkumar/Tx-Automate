@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <PackageId>Contoso.08.28.22.001.Test</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Anuj</Authors>
+    <Company>TX</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
