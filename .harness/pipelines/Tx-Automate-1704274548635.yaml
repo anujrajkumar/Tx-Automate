@@ -25,6 +25,9 @@ pipeline:
                   spec:
                     shell: Sh
                     command: |-
+                      git status
+                      git pull
+                      git checkout master
                       dotnet build MyAppT/MyAppT.csproj
                       dotnet publish --configuration Release --output ./published
                       zip -r published_artifacts.zip ./published
