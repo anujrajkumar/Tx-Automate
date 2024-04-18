@@ -1,0 +1,35 @@
+pipeline:
+  name: release
+  identifier: release
+  projectIdentifier: DotNetPipeline
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.Github_OAuth_1704192628541
+        repoName: anujrajkumar/Tx-Automate
+        build: <+input>
+  stages:
+    - stage:
+        name: check
+        identifier: check
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: test
+                  identifier: test
+                  spec:
+                    shell: Sh
+                    command: echo "Hello World"
