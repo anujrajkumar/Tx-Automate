@@ -1,0 +1,53 @@
+pipeline:
+  name: Build
+  identifier: Build
+  projectIdentifier: demo
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.Github_OAuth_1704192628541
+        repoName: anujrajkumar/Tx-Automate
+        build: <+input>
+  stages:
+    - stage:
+        name: Build
+        identifier: Build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Build
+                  identifier: Build
+                  spec:
+                    shell: Sh
+                    command: |-
+                      dotnet build MyAppT/MyAppT.csproj
+                      dotnet publish --configuration Release --output ./published
+                      zip -r published_artifacts.zip ./published
+                      ls -ltr
+                      temp=find . -name '*.zip'
+                      zip= $(mv $temp "build.<+pipeline.sequenceId>.zip")
+                      # export ZipFileName=$(find . -name '*.zip')
+                      export ZipFileName=$zip
+                      echo "$ZipFileName"
+                    outputVariables:
+                      - name: ZipFileName
+              - step:
+                  type: Run
+                  name: Upload
+                  identifier: Upload
+                  spec:
+                    shell: Sh
+                    command: curl -v -u admin:admin --upload-file file.zip http://16.170.143.32:8081/IIS
