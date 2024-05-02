@@ -51,4 +51,10 @@ pipeline:
                   identifier: Upload
                   spec:
                     shell: Sh
-                    command: curl -v -u admin:admin --upload-file file.zip http://16.170.143.32:8081/IIS
+                    command: curl -v -u admin:admin --upload-file <+stage.variables.zipName> http://16.170.143.32:8081/IIS
+        variables:
+          - name: zipName
+            type: String
+            description: ""
+            required: false
+            value: <+pipeline.stages.Build.spec.execution.steps.Build.output.outputVariables.ZipFileName>
