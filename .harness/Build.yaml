@@ -37,8 +37,9 @@ pipeline:
                       dotnet publish --configuration Release --output ./published
                       zip -r published_artifacts.zip ./published
                       ls -ltr
-                      temp=find . -name '*.zip'
-                      zip= $(mv $temp "build.<+pipeline.sequenceId>.zip")
+                      temp=$(find . -name '*.zip')
+                      zip="published_artifacts.<+pipeline.sequenceId>.zip"
+                      mv "$temp" "$zip"
                       # export ZipFileName=$(find . -name '*.zip')
                       export ZipFileName=$zip
                       echo "$ZipFileName"
