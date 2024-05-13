@@ -46,12 +46,13 @@ pipeline:
                     outputVariables:
                       - name: ZipFileName
               - step:
-                  type: Run
-                  name: Upload
-                  identifier: Upload
+                  type: ArtifactoryUpload
+                  name: ArtifactoryUpload
+                  identifier: ArtifactoryUpload
                   spec:
-                    shell: Sh
-                    command: curl -v -u admin:admin --upload-file <+stage.variables.zipName> http://13.60.89.152:8081/repository/IIS/
+                    connectorRef: account.IIS
+                    target: generic-local/
+                    sourcePath: <+stage.variables.zipName>
         variables:
           - name: zipName
             type: String
