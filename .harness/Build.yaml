@@ -38,7 +38,7 @@ pipeline:
                       zip -r published_artifacts.zip ./published
                       ls -ltr
                       temp=$(find . -name '*.zip')
-                      zip="published_artifacts.25.zip"
+                      zip="published_artifacts.28.zip"
                       mv "$temp" "$zip"
                       # export ZipFileName=$(find . -name '*.zip')
                       export ZipFileName=$zip
