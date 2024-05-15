@@ -33,6 +33,7 @@ pipeline:
                   spec:
                     shell: Sh
                     command: |-
+                      ls -ltr
                       msbuild --version
                       export PATH="$PATH:/root/.dotnet/tools"
                       export SONAR_SCANNER_OPTS="-Xmx4096m"
