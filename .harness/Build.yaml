@@ -33,7 +33,7 @@ pipeline:
                   spec:
                     shell: Sh
                     command: |-
-                      dotnet tool list --global
+                      msbuild --version
                       export PATH="$PATH:/root/.dotnet/tools"
                       export SONAR_SCANNER_OPTS="-Xmx4096m"
                       dotnet tool install --global dotnet-sonarscanner
