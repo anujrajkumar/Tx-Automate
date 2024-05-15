@@ -33,6 +33,7 @@ pipeline:
                   spec:
                     shell: Sh
                     command: |-
+                      export PATH="$PATH:/root/.dotnet/tools"
                       dotnet tool install --global dotnet-sonarscanner
                       dotnet sonarscanner begin /k:"harness-demo" /d:sonar.host.url="http://13.53.182.253:9000"  /d:sonar.token=<+secrets.getValue("account.sonar_token")>
                       dotnet sonarscanner end /d:sonar.token=<+secrets.getValue("account.sonar_token")>
