@@ -34,9 +34,9 @@ pipeline:
                     shell: Sh
                     command: |-
                       ls -ltr
-                      msbuild --version
-                      export PATH="$PATH:/root/.dotnet/tools"
-                      export SONAR_SCANNER_OPTS="-Xmx4096m"
+                      # msbuild --version
+                      # export PATH="$PATH:/root/.dotnet/tools"
+                      # export SONAR_SCANNER_OPTS="-Xmx4096m"
                       dotnet tool install --global dotnet-sonarscanner
                       dotnet sonarscanner begin /k:"harness-demo" /d:sonar.host.url="http://13.53.182.253:9000"  /d:sonar.token=<+secrets.getValue("account.sonar_token")>
                       dotnet build MyAppT/MyAppT.csproj
