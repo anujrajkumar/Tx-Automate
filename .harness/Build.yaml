@@ -41,6 +41,7 @@ pipeline:
                       apt-get install -y openjdk-17-jre-headless zip unzip python3-pip
                       apt-get clean
                       dotnet tool install --global dotnet-sonarscanner
+                      java --version
                       dotnet sonarscanner begin /k:"harness-demo" /d:sonar.host.url="http://13.53.182.253:9000"  /d:sonar.token=<+secrets.getValue("account.sonar_token")>
                       dotnet build MyAppT/MyAppT.csproj
                       dotnet sonarscanner end /d:sonar.token=<+secrets.getValue("account.sonar_token")>
