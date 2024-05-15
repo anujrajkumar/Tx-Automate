@@ -33,6 +33,9 @@ pipeline:
                   spec:
                     shell: Sh
                     command: |-
+                      dotnet tool install --global dotnet-sonarscanner
+                      dotnet sonarscanner begin /k:"harness-demo" /d:sonar.host.url="http://13.53.182.253:9000"  /d:sonar.token=<+secrets.getValue("account.sonar_token")>
+                      dotnet sonarscanner end /d:sonar.token=<+secrets.getValue("account.sonar_token")>
                       dotnet build MyAppT/MyAppT.csproj
                       dotnet publish --configuration Release --output ./published
                       zip -r published_artifacts.zip ./published
@@ -45,6 +48,26 @@ pipeline:
                       echo "$ZipFileName"
                     outputVariables:
                       - name: ZipFileName
+              - step:
+                  type: Sonarqube
+                  name: Sonarqube
+                  identifier: Sonarqube
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: low
+                    auth:
+                      access_token: <+secrets.getValue("account.sonar_token")>
+                      domain: http://13.53.182.253:9000/
+                      ssl: true
+                    tool:
+                      project_key: harness-demo
               - step:
                   type: ArtifactoryUpload
                   name: ArtifactoryUpload
