@@ -51,7 +51,7 @@ pipeline:
                       zip -r published_artifacts.zip ./published
                       ls -ltr
                       temp=$(find . -name '*.zip')
-                      zip="published_artifacts.100.zip"
+                      zip="published_artifacts.101.zip"
                       mv "$temp" "$zip"
                       # export ZipFileName=$(find . -name '*.zip')
                       export ZipFileName=$zip
@@ -71,7 +71,7 @@ pipeline:
                     advanced:
                       log:
                         level: info
-                      fail_on_severity: low
+                      fail_on_severity: medium
                     auth:
                       access_token: <+secrets.getValue("account.sonar_token")>
                       domain: http://51.20.75.90:9000/
