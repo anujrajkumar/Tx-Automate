@@ -63,7 +63,7 @@ pipeline:
                   name: Sonarqube
                   identifier: Sonarqube
                   spec:
-                    mode: orchestration
+                    mode: extraction
                     config: default
                     target:
                       type: repository
