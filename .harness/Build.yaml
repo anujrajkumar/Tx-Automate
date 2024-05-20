@@ -73,7 +73,7 @@ pipeline:
                         level: info
                       fail_on_severity: medium
                     auth:
-                      access_token: <+secrets.getValue("account.sonar_token")>
+                      access_token: <+secrets.getValue("account.harness-demo2")>
                       domain: http://16.16.183.57:9000/
                       ssl: true
                     tool:
