@@ -63,7 +63,7 @@ pipeline:
                   name: Sonarqube
                   identifier: Sonarqube
                   spec:
-                    mode: orchestration
+                    mode: extraction
                     config: default
                     target:
                       type: repository
@@ -77,7 +77,7 @@ pipeline:
                       domain: http://16.16.183.57:9000/
                       ssl: true
                     tool:
-                      project_key: harness-demo
+                      project_key: harness-demo2
               - step:
                   type: ArtifactoryUpload
                   name: ArtifactoryUpload
