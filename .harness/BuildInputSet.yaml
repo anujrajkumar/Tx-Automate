@@ -1,0 +1,31 @@
+inputSet:
+  pipeline:
+    identifier: Build
+    properties:
+      ci:
+        codebase:
+          build:
+            spec:
+              branch: main
+            type: branch
+    stages:
+      - stage:
+          identifier: Build
+          type: CI
+          variables:
+            - name: test1
+              type: String
+              value: anuj
+            - name: test2
+              type: String
+              value: navjit
+            - name: test3
+              type: String
+              value: gurpreet
+            - name: test4
+              type: String
+              value: aquib
+  name: BuildInputSet
+  identifier: BuildInputSet
+  orgIdentifier: default
+  projectIdentifier: demo
