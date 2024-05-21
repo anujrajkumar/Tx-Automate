@@ -15,13 +15,13 @@ inputSet:
           variables:
             - name: test1
               type: String
-              value: anuj
+              value: ha
             - name: test2
               type: String
-              value: navjit
+              value: haa
             - name: test3
               type: String
-              value: gurpreet
+              value: haaa
             - name: test4
               type: String
               value: aquib
