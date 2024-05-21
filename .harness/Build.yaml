@@ -56,6 +56,12 @@ pipeline:
                       # export ZipFileName=$(find . -name '*.zip')
                       export ZipFileName=$zip
                       echo "$ZipFileName"
+
+
+                      echo "<+stage.variables.test1>"
+                      echo "<+stage.variables.test2>"
+                      echo "<+stage.variables.test3>"
+                      echo "<+stage.variables.test4>"
                     outputVariables:
                       - name: ZipFileName
               - step:
@@ -92,3 +98,23 @@ pipeline:
             description: ""
             required: false
             value: <+pipeline.stages.Build.spec.execution.steps.Build.output.outputVariables.ZipFileName>
+          - name: test1
+            type: String
+            description: ""
+            required: true
+            value: <+input>
+          - name: test2
+            type: String
+            description: ""
+            required: true
+            value: <+input>
+          - name: test3
+            type: String
+            description: ""
+            required: true
+            value: <+input>
+          - name: test4
+            type: String
+            description: ""
+            required: true
+            value: <+input>
