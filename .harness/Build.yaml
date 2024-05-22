@@ -44,9 +44,9 @@ pipeline:
                       export PATH="$PATH:$JAVA_HOME/bin"
                       java --version
                       dotnet tool install --global dotnet-sonarscanner
-                      dotnet sonarscanner begin /k:"harness-demo2" /d:sonar.host.url="http://51.21.1.117:9000"  /d:sonar.login=<+secrets.getValue("account.sonar_token")>
+                      dotnet sonarscanner begin /k:"harness-demo2" /d:sonar.host.url="http://51.21.1.117:9000"  /d:sonar.token=<+secrets.getValue("account.sonar_token")>
                       dotnet build MyAppT/MyAppT.csproj
-                      dotnet sonarscanner end /d:sonar.login=<+secrets.getValue("account.sonar_token")>
+                      dotnet sonarscanner end /d:sonar.token=<+secrets.getValue("account.sonar_token")>
                       dotnet publish --configuration Release --output ./published
                       zip -r published_artifacts.zip ./published
                       ls -ltr
