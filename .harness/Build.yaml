@@ -33,20 +33,20 @@ pipeline:
                   spec:
                     shell: Sh
                     command: |-
-                      # java --version
-                      # # msbuild --version
-                      # # export PATH="$PATH:/root/.dotnet/tools"
-                      # # export SONAR_SCANNER_OPTS="-Xmx4096m"
-                      # sudo apt update
-                      # sudo apt install openjdk-17-jdk
-                      # sudo update-alternatives --config java
-                      # export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-                      # export PATH="$PATH:$JAVA_HOME/bin"
-                      # java --version
-                      # dotnet tool install --global dotnet-sonarscanner
-                      # dotnet sonarscanner begin /k:"harness-demo2" /d:sonar.host.url="http://16.16.183.57:9000"  /d:sonar.token=<+secrets.getValue("account.sonar_token")>
+                      java --version
+                      # msbuild --version
+                      # export PATH="$PATH:/root/.dotnet/tools"
+                      # export SONAR_SCANNER_OPTS="-Xmx4096m"
+                      sudo apt update
+                      sudo apt install openjdk-17-jdk
+                      sudo update-alternatives --config java
+                      export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+                      export PATH="$PATH:$JAVA_HOME/bin"
+                      java --version
+                      dotnet tool install --global dotnet-sonarscanner
+                      dotnet sonarscanner begin /k:"harness-demo2" /d:sonar.host.url="http://51.21.1.117:9000"  /d:sonar.login=<+secrets.getValue("account.sonar_token")>
                       dotnet build MyAppT/MyAppT.csproj
-                      # dotnet sonarscanner end /d:sonar.token=<+secrets.getValue("account.sonar_token")>
+                      dotnet sonarscanner end /d:sonar.login=<+secrets.getValue("account.sonar_token")>
                       dotnet publish --configuration Release --output ./published
                       zip -r published_artifacts.zip ./published
                       ls -ltr
