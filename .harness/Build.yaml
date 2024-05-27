@@ -79,7 +79,7 @@ pipeline:
                         level: info
                       fail_on_severity: medium
                     auth:
-                      access_token: <+secrets.getValue("account.harness-demo2")>
+                      access_token: <+secrets.getValue("account.harness-user")>
                       domain: http://51.21.1.117:9000/
                       ssl: true
                     tool:
