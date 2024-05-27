@@ -75,7 +75,7 @@ pipeline:
                       type: repository
                       detection: manual
                       name: anujrajkumar/Tx-Automate
-                      variant: master
+                      variant: docker
                     advanced:
                       log:
                         level: info
