@@ -83,7 +83,7 @@ pipeline:
                       domain: http://51.21.1.117:9000/
                       ssl: true
                     tool:
-                      project_key: harness-demo5
+                      project_key: harness-demo6
               - step:
                   type: ArtifactoryUpload
                   name: ArtifactoryUpload
