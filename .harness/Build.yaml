@@ -80,7 +80,7 @@ pipeline:
                       fail_on_severity: medium
                     auth:
                       access_token: <+secrets.getValue("account.harness-demo2")>
-                      domain: http://16.16.183.57:9000/
+                      domain: http://51.21.1.117:9000/
                       ssl: true
                     tool:
                       project_key: harness-demo4
