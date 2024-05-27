@@ -82,8 +82,6 @@ pipeline:
                       access_token: <+secrets.getValue("account.harness-user")>
                       domain: http://51.21.1.117:9000/
                       ssl: true
-                    tool:
-                      project_key: harness-demo6
               - step:
                   type: ArtifactoryUpload
                   name: ArtifactoryUpload
