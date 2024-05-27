@@ -73,9 +73,7 @@ pipeline:
                     config: default
                     target:
                       type: repository
-                      detection: manual
-                      name: anujrajkumar/Tx-Automate
-                      variant: main
+                      detection: auto
                     advanced:
                       log:
                         level: info
