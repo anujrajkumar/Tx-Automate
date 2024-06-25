@@ -27,6 +27,26 @@ pipeline:
           execution:
             steps:
               - step:
+                  type: Sonarqube
+                  name: Sonarqube
+                  identifier: Sonarqube
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: medium
+                    auth:
+                      access_token: <+secrets.getValue("account.harness-user")>
+                      domain: http://13.53.86.216:9000/
+                      ssl: true
+                    tool:
+                      project_key: harness-demo10
+              - step:
                   type: Run
                   name: Build
                   identifier: Build
@@ -64,26 +84,6 @@ pipeline:
                       echo "<+stage.variables.test4>"
                     outputVariables:
                       - name: ZipFileName
-              - step:
-                  type: Sonarqube
-                  name: Sonarqube
-                  identifier: Sonarqube
-                  spec:
-                    mode: extraction
-                    config: default
-                    target:
-                      type: repository
-                      detection: auto
-                    advanced:
-                      log:
-                        level: info
-                      fail_on_severity: medium
-                    auth:
-                      access_token: <+secrets.getValue("account.harness-user")>
-                      domain: http://13.51.48.42:9000/
-                      ssl: true
-                    tool:
-                      project_key: harness-demo10
               - step:
                   type: ArtifactoryUpload
                   name: ArtifactoryUpload
