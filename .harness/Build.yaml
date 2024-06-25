@@ -43,8 +43,6 @@ pipeline:
                       # export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
                       # export PATH="$PATH:$JAVA_HOME/bin"
                       # java --version
-                      #!/bin/bash
-
                       # Update package list
                       sudo apt-get update
 
@@ -54,13 +52,16 @@ pipeline:
                       # Add OpenJDK 17 to alternatives
                       sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-openjdk-amd64/bin/java 1
                       sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac 1
+                      sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/java-17-openjdk-amd64/bin/jar 1
 
                       # Set OpenJDK 17 as the default
                       sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
                       sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+                      sudo update-alternatives --set jar /usr/lib/jvm/java-17-openjdk-amd64/bin/jar
 
                       # Verify the Java version
                       java --version
+                      javac --version
               - step:
                   type: Run
                   name: Build
