@@ -69,7 +69,7 @@ pipeline:
                   spec:
                     shell: Sh
                     command: |-
-                      # java --version
+                      java --version
                       # # msbuild --version
                       # # export PATH="$PATH:/root/.dotnet/tools"
                       # # export SONAR_SCANNER_OPTS="-Xmx4096m"
