@@ -27,25 +27,22 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: Sonarqube
-                  name: Sonarqube
-                  identifier: Sonarqube
+                  type: Run
+                  name: dependencies
+                  identifier: dependencies
                   spec:
-                    mode: orchestration
-                    config: default
-                    target:
-                      type: repository
-                      detection: auto
-                    advanced:
-                      log:
-                        level: info
-                      fail_on_severity: medium
-                    auth:
-                      access_token: <+secrets.getValue("account.harness-user")>
-                      domain: http://13.53.86.216:9000/
-                      ssl: true
-                    tool:
-                      project_key: harness-demo10
+                    shell: Sh
+                    command: |-
+                      java --version
+                      # msbuild --version
+                      # export PATH="$PATH:/root/.dotnet/tools"
+                      # export SONAR_SCANNER_OPTS="-Xmx4096m"
+                      sudo apt update
+                      sudo apt install openjdk-17-jdk
+                      sudo update-alternatives --config java
+                      export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+                      export PATH="$PATH:$JAVA_HOME/bin"
+                      java --version
               - step:
                   type: Run
                   name: Build
@@ -64,7 +61,7 @@ pipeline:
                       # export PATH="$PATH:$JAVA_HOME/bin"
                       # java --version
                       dotnet tool install --global dotnet-sonarscanner
-                      dotnet sonarscanner begin /k:"harness-demo10" /d:sonar.host.url="http://13.53.86.216:9000"  /d:sonar.login=<+secrets.getValue("account.harness-user")>
+                      dotnet sonarscanner begin /k:"harness-demo12" /d:sonar.host.url="http://13.53.86.216:9000"  /d:sonar.login=<+secrets.getValue("account.harness-user")>
                       dotnet build MyAppT/MyAppT.csproj
                       dotnet sonarscanner end /d:sonar.login=<+secrets.getValue("account.harness-user")>
                       dotnet publish --configuration Release --output ./published
@@ -84,6 +81,26 @@ pipeline:
                       echo "<+stage.variables.test4>"
                     outputVariables:
                       - name: ZipFileName
+              - step:
+                  type: Sonarqube
+                  name: Sonarqube
+                  identifier: Sonarqube
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: medium
+                    auth:
+                      access_token: <+secrets.getValue("account.harness-user")>
+                      domain: http://13.53.86.216:9000/
+                      ssl: true
+                    tool:
+                      project_key: harness-demo11
               - step:
                   type: ArtifactoryUpload
                   name: ArtifactoryUpload
