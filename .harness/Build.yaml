@@ -81,8 +81,9 @@ pipeline:
                       # # export PATH="$PATH:$JAVA_HOME/bin"
                       # java --version
                       # dotnet tool install --global dotnet-sonarscanner
-                      dotnet pack MyAppT/MyAppT.csproj --configuration '<+stage.variables.Configuration>'
+                      # dotnet pack MyAppT/MyAppT.csproj --configuration '<+stage.variables.Configuration>'
                       dotnet build MyAppT/MyAppT.csproj
+                      dotnet pack MyAppT/MyAppT.csproj --configuration '<+stage.variables.Configuration>'
                       dotnet sonarscanner end /d:sonar.login=<+secrets.getValue("account.harness-user")>
                       dotnet publish --configuration Release --output ./published
                       zip -r published_artifacts.zip ./published
