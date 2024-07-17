@@ -33,35 +33,35 @@ pipeline:
                   spec:
                     shell: Sh
                     command: |-
-                      java --version
-                      # # msbuild --version
-                      # # export PATH="$PATH:/root/.dotnet/tools"
-                      # # export SONAR_SCANNER_OPTS="-Xmx4096m"
-                      # sudo apt update
-                      # sudo apt install openjdk-17-jdk
-                      # sudo update-alternatives --config java
-                      # export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-                      # export PATH="$PATH:$JAVA_HOME/bin"
                       # java --version
-                      # Update package list
-                      sudo apt-get update
+                      #                       # # msbuild --version
+                      #                       # # export PATH="$PATH:/root/.dotnet/tools"
+                      #                       # # export SONAR_SCANNER_OPTS="-Xmx4096m"
+                      #                       # sudo apt update
+                      #                       # sudo apt install openjdk-17-jdk
+                      #                       # sudo update-alternatives --config java
+                      #                       # export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+                      #                       # export PATH="$PATH:$JAVA_HOME/bin"
+                      #                       # java --version
+                      #                       # Update package list
+                      #                       sudo apt-get update
 
-                      # Install OpenJDK 17
-                      sudo apt-get install -y openjdk-17-jdk
+                      #                       # Install OpenJDK 17
+                      #                       sudo apt-get install -y openjdk-17-jdk
 
-                      # Add OpenJDK 17 to alternatives
-                      sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-openjdk-amd64/bin/java 1
-                      sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac 1
-                      sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/java-17-openjdk-amd64/bin/jar 1
+                      #                       # Add OpenJDK 17 to alternatives
+                      #                       sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-openjdk-amd64/bin/java 1
+                      #                       sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac 1
+                      #                       sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/java-17-openjdk-amd64/bin/jar 1
 
-                      # Set OpenJDK 17 as the default
-                      sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
-                      sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
-                      sudo update-alternatives --set jar /usr/lib/jvm/java-17-openjdk-amd64/bin/jar
+                      #                       # Set OpenJDK 17 as the default
+                      #                       sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+                      #                       sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+                      #                       sudo update-alternatives --set jar /usr/lib/jvm/java-17-openjdk-amd64/bin/jar
 
-                      # Verify the Java version
-                      export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-                      export PATH="$PATH:$JAVA_HOME/bin"
+                      #                       # Verify the Java version
+                      #                       export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+                      #                       export PATH="$PATH:$JAVA_HOME/bin"
                       java --version
               - step:
                   type: Run
@@ -79,17 +79,22 @@ pipeline:
                       # sudo update-alternatives --config java
                       # # export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
                       # # export PATH="$PATH:$JAVA_HOME/bin"
-                      java --version
-                      dotnet tool install --global dotnet-sonarscanner
-                      dotnet sonarscanner begin /k:"harness-demo12" /d:sonar.host.url="http://13.53.86.216:9000"  /d:sonar.login=<+secrets.getValue("account.harness-user")>
+                      # java --version
+                      # dotnet tool install --global dotnet-sonarscanner
+                      dotnet pack MyAppT/MyAppT.csproj --configuration '<+stage.variables.Configuration>'
                       dotnet build MyAppT/MyAppT.csproj
                       dotnet sonarscanner end /d:sonar.login=<+secrets.getValue("account.harness-user")>
                       dotnet publish --configuration Release --output ./published
                       zip -r published_artifacts.zip ./published
                       ls -ltr
+                      PACKAGE_PATH=$(find output -name "*.nupkg")
+                      NEW_PACKAGE_PATH=${PACKAGE_PATH%.nupkg}-release.nupkg
+                      mv "$PACKAGE_PATH" "$NEW_PACKAGE_PATH"
+                      echo "Package renamed to $NEW_PACKAGE_PATH"
                       temp=$(find . -name '*.zip')
                       zip="published_artifacts.101.zip"
                       mv "$temp" "$zip"
+                      ls -ltr
                       # export ZipFileName=$(find . -name '*.zip')
                       export ZipFileName=$zip
                       echo "$ZipFileName"
@@ -155,3 +160,8 @@ pipeline:
             description: ""
             required: true
             value: <+input>
+          - name: Configuration
+            type: String
+            description: ""
+            required: true
+            value: <+input>.default(Release).allowedValues(Debug,Release)
