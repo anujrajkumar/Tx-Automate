@@ -45,5 +45,11 @@ pipeline:
                     shell: Sh
                     command: |-
                       # Build the project
-                      dotnet build MyAppT/MyAppT.csproj -c Release
+                      dotnet build "<+stage.variables.projectfile>" -c Release
                   description: Compiling the Project
+        variables:
+          - name: projectfile
+            type: String
+            description: ""
+            required: false
+            value: MyAppT/MyAppT.csproj
