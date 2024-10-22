@@ -34,6 +34,7 @@ pipeline:
                     shell: Sh
                     command: |-
                       # Restoring the dependencies for Dotnet Application
+                      dotnet --info
                       dotnet restore MyAppT/MyAppT.csproj -c Release
                   description: Restoring the dependencies.
               - step:
