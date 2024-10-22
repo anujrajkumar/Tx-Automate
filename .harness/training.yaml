@@ -35,6 +35,7 @@ pipeline:
                     command: |-
                       # Restoring the dependencies for Dotnet Application
                       dotnet --info
+                      echo "<+stage.variables.test>"
                       # dotnet restore MyAppT/MyAppT.csproj -c Release
                   description: Restoring the dependencies.
               - step:
@@ -53,3 +54,8 @@ pipeline:
             description: ""
             required: false
             value: MyAppT/MyAppT.csproj
+          - name: test
+            type: String
+            description: ""
+            required: true
+            value: <+input>
