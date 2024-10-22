@@ -1,0 +1,48 @@
+pipeline:
+  name: training
+  identifier: training
+  projectIdentifier: DotNetPipeline
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.Github_OAuth_1704192628541
+        repoName: anujrajkumar/Tx-Automate
+        build: <+input>
+  stages:
+    - stage:
+        name: Build
+        identifier: Build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Restore
+                  identifier: Restore
+                  spec:
+                    shell: Sh
+                    command: |-
+                      # Restoring the dependencies for Dotnet Application
+                      dotnet restore MyAppT/MyAppT.csproj -c Release
+                  description: Restoring the dependencies.
+              - step:
+                  type: Run
+                  name: Build
+                  identifier: Build
+                  spec:
+                    shell: Sh
+                    command: |-
+                      # Build the project
+                      dotnet build MyAppT/MyAppT.csproj -c Release
+                  description: Compiling the Project
