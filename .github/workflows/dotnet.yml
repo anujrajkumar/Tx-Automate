@@ -5,7 +5,7 @@ name: Tx-Automate-Pipeline
 
 on:
   push:
-    branches: [ "docker" ]
+    branches: [ "master" ]
   pull_request:
     branches: [ "main" ]
 
